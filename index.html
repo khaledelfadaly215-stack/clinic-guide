@@ -24,6 +24,7 @@
       --muted: #6b7c7b;
       --border: #e2e8e7;
       --danger: #dc2626;
+      --warning: #d97706;
       --shadow: 0 10px 30px rgba(15, 118, 110, 0.08);
     }
 
@@ -71,6 +72,8 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      cursor: pointer;
+      user-select: none;
     }
 
     .logo-icon {
@@ -362,6 +365,12 @@
       font-size: 24px;
     }
 
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .admin-section {
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -430,6 +439,22 @@
       font-weight: bold;
     }
 
+    .edit-btn {
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .move-btn {
+      background: #ecfdf5;
+      color: #047857;
+      padding: 8px 11px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
     .danger-btn {
       background: #fee2e2;
       color: var(--danger);
@@ -453,6 +478,12 @@
       margin-bottom: 15px;
     }
 
+    .admin-clinic-actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
     .admin-service {
       background: #f8faf9;
       border-radius: 10px;
@@ -468,6 +499,151 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      min-width: 0;
+    }
+
+    .admin-service-info > div {
+      min-width: 0;
+    }
+
+    .admin-service-number {
+      width: 30px;
+      height: 30px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .admin-service-actions {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .edit-form {
+      background: #f0fdfa;
+      border: 1px solid #99f6e4;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .edit-form.active {
+      display: block;
+    }
+
+    .edit-form-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* ================= PASSWORD MODAL ================= */
+
+    .password-modal .modal {
+      max-width: 430px;
+    }
+
+    .password-content {
+      padding: 28px;
+    }
+
+    .password-icon {
+      width: 65px;
+      height: 65px;
+      background: #e6fffb;
+      color: var(--primary);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 15px;
+    }
+
+    .password-content h2 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .password-content p {
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .password-input-wrapper {
+      position: relative;
+    }
+
+    .password-input-wrapper input {
+      width: 100%;
+      padding: 13px 45px 13px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .password-input-wrapper input:focus {
+      border-color: var(--secondary);
+    }
+
+    .show-password-btn {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .password-error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .password-error.active {
+      display: block;
+    }
+
+    .login-btn {
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    /* ================= TOAST ================= */
+
+    .toast {
+      position: fixed;
+      bottom: 25px;
+      right: 50%;
+      transform: translateX(50%) translateY(20px);
+      background: #16302f;
+      color: white;
+      padding: 13px 20px;
+      border-radius: 12px;
+      z-index: 3000;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(50%) translateY(0);
     }
 
     .empty {
@@ -488,6 +664,7 @@
     /* ================= MOBILE ================= */
 
     @media (max-width: 650px) {
+
       .header-content {
         flex-direction: column;
         text-align: center;
@@ -518,6 +695,10 @@
         align-items: stretch;
       }
 
+      .admin-actions {
+        flex-direction: column;
+      }
+
       .clinic-header {
         flex-direction: column;
         text-align: center;
@@ -525,6 +706,24 @@
 
       .modal-buttons {
         flex-direction: column;
+      }
+
+      .admin-clinic-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .admin-service {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .admin-service-actions {
+        width: 100%;
+      }
+
+      .admin-service-actions button {
+        flex: 1;
       }
     }
   </style>
@@ -535,22 +734,35 @@
   <!-- ================= HEADER ================= -->
 
   <header>
+
     <div class="header-content">
 
-      <div class="logo">
-        <div class="logo-icon">🏥</div>
+      <div
+        class="logo"
+        onclick="showHome()"
+        title="العودة للصفحة الرئيسية"
+      >
+
+        <div class="logo-icon">
+          🏥
+        </div>
 
         <div>
           <h1>دليل العيادات</h1>
           <p>العيادات والخدمات المتوفرة</p>
         </div>
+
       </div>
 
-      <button class="admin-btn" onclick="openAdmin()">
+      <button
+        class="admin-btn"
+        onclick="openAdmin()"
+      >
         ⚙️ إدارة الموقع
       </button>
 
     </div>
+
   </header>
 
 
@@ -563,40 +775,76 @@
     <section id="homePage">
 
       <div class="page-title">
+
         <h2>اختر العيادة</h2>
-        <p>اضغط على اسم العيادة لمعرفة الخدمات المتوفرة</p>
+
+        <p>
+          اضغط على اسم العيادة لمعرفة الخدمات المتوفرة
+        </p>
+
       </div>
 
-      <div id="clinicsGrid" class="clinics-grid"></div>
+      <div
+        id="clinicsGrid"
+        class="clinics-grid"
+      ></div>
 
     </section>
 
 
     <!-- SERVICES -->
 
-    <section id="servicesPage" style="display:none;">
+    <section
+      id="servicesPage"
+      style="display:none;"
+    >
 
-      <button class="back-btn" onclick="showHome()">
+      <button
+        class="back-btn"
+        onclick="showHome()"
+      >
         ← العودة للعيادات
       </button>
 
       <div id="clinicHeader"></div>
 
-      <div id="servicesGrid" class="services-grid"></div>
+      <div
+        id="servicesGrid"
+        class="services-grid"
+      ></div>
 
     </section>
 
 
     <!-- ADMIN -->
 
-    <section id="adminPage" class="admin-panel">
+    <section
+      id="adminPage"
+      class="admin-panel"
+    >
 
       <div class="admin-title">
+
         <h2>⚙️ إدارة الموقع</h2>
 
-        <button class="secondary-btn" onclick="showHome()">
-          العودة للموقع
-        </button>
+        <div class="admin-actions">
+
+          <button
+            class="secondary-btn"
+            onclick="showHome()"
+          >
+            العودة للموقع
+          </button>
+
+          <button
+            class="danger-btn"
+            onclick="logoutAdmin()"
+          >
+            🔒 تسجيل الخروج
+          </button>
+
+        </div>
+
       </div>
 
 
@@ -609,35 +857,53 @@
         <div class="form-grid">
 
           <div class="form-group">
-            <label>اسم العيادة</label>
+
+            <label>
+              اسم العيادة
+            </label>
+
             <input
               type="text"
               id="clinicName"
               placeholder="مثال: عيادة النور"
             />
+
           </div>
 
           <div class="form-group">
-            <label>أيقونة العيادة</label>
+
+            <label>
+              أيقونة العيادة
+            </label>
+
             <input
               type="text"
               id="clinicIcon"
               placeholder="🏥"
               value="🏥"
             />
+
           </div>
 
           <div class="form-group full">
-            <label>وصف العيادة</label>
+
+            <label>
+              وصف العيادة
+            </label>
+
             <textarea
               id="clinicDescription"
               placeholder="اكتب وصفًا مختصرًا للعيادة..."
             ></textarea>
+
           </div>
 
         </div>
 
-        <button class="primary-btn" onclick="addClinic()">
+        <button
+          class="primary-btn"
+          onclick="addClinic()"
+        >
           إضافة العيادة
         </button>
 
@@ -648,7 +914,9 @@
 
       <div class="admin-section">
 
-        <h3>📋 العيادات والخدمات</h3>
+        <h3>
+          📋 العيادات والخدمات
+        </h3>
 
         <div id="adminClinics"></div>
 
@@ -659,7 +927,7 @@
   </main>
 
 
-  <!-- ================= MODAL ================= -->
+  <!-- ================= SERVICE MODAL ================= -->
 
   <div
     id="serviceModal"
@@ -671,9 +939,16 @@
 
       <div class="modal-top">
 
-        <div id="modalIcon" class="modal-icon">🦷</div>
+        <div
+          id="modalIcon"
+          class="modal-icon"
+        >
+          🦷
+        </div>
 
-        <h2 id="modalTitle">اسم الخدمة</h2>
+        <h2 id="modalTitle">
+          اسم الخدمة
+        </h2>
 
       </div>
 
@@ -708,6 +983,91 @@
   </div>
 
 
+  <!-- ================= PASSWORD MODAL ================= -->
+
+  <div
+    id="passwordModal"
+    class="modal-overlay password-modal"
+    onclick="closePasswordOutside(event)"
+  >
+
+    <div class="modal">
+
+      <div class="modal-top">
+
+        <div class="modal-icon">
+          🔐
+        </div>
+
+        <h2>
+          دخول الإدارة
+        </h2>
+
+      </div>
+
+      <div class="password-content">
+
+        <div class="password-icon">
+          🔒
+        </div>
+
+        <h2>
+          لوحة التحكم
+        </h2>
+
+        <p>
+          أدخل كلمة المرور للوصول إلى إدارة الموقع
+        </p>
+
+        <div class="password-input-wrapper">
+
+          <input
+            type="password"
+            id="adminPasswordInput"
+            placeholder="كلمة المرور"
+            autocomplete="current-password"
+            onkeydown="passwordKeyDown(event)"
+          />
+
+          <button
+            class="show-password-btn"
+            onclick="togglePasswordVisibility()"
+            type="button"
+          >
+            👁️
+          </button>
+
+        </div>
+
+        <div
+          id="passwordError"
+          class="password-error"
+        >
+          كلمة المرور غير صحيحة.
+        </div>
+
+        <button
+          class="primary-btn login-btn"
+          onclick="checkAdminPassword()"
+        >
+          دخول إلى لوحة الإدارة
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= TOAST ================= -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
   <footer>
     جميع الحقوق محفوظة © 2026
   </footer>
@@ -717,44 +1077,75 @@
 
   <script>
 
-    /*
-      =====================================================
-      البيانات الافتراضية
+    /* =====================================================
+       إعدادات الموقع
+       ===================================================== */
 
-      يمكنك تعديلها هنا إذا أردت.
-      لكن بعد استخدام لوحة التحكم لن تحتاج لتعديل الكود.
-      =====================================================
+    /*
+      غيّر كلمة المرور من هنا فقط.
+
+      كلمة المرور الحالية:
+      1234
     */
+
+    const ADMIN_PASSWORD = "1234";
+
+
+    /*
+      مدة جلسة الإدارة بالدقائق.
+      بعد انتهاء المدة سيحتاج المستخدم لتسجيل الدخول مرة أخرى.
+    */
+
+    const ADMIN_SESSION_MINUTES = 60;
+
+
+    /* =====================================================
+       البيانات الافتراضية
+       ===================================================== */
 
     const defaultClinics = [
 
       {
         id: 1,
+
         name: "عيادة النور",
+
         icon: "🏥",
-        description: "عيادة متخصصة تقدم مجموعة متنوعة من الخدمات الطبية.",
+
+        description:
+          "عيادة متخصصة تقدم مجموعة متنوعة من الخدمات الطبية.",
+
         services: [
 
           {
             id: 101,
+
             name: "تنظيف الأسنان",
+
             icon: "🦷",
+
             description:
               "خدمة تنظيف الأسنان وإزالة الجير والتصبغات للحصول على أسنان أكثر نظافة وصحة."
           },
 
           {
             id: 102,
+
             name: "تبييض الأسنان",
+
             icon: "✨",
+
             description:
               "جلسة تبييض احترافية تساعد على تفتيح لون الأسنان والحصول على ابتسامة أكثر إشراقًا."
           },
 
           {
             id: 103,
+
             name: "فحص شامل",
+
             icon: "🩺",
+
             description:
               "فحص شامل للحالة الصحية مع تقييم الحالة وتقديم التوصيات المناسبة."
           }
@@ -762,25 +1153,37 @@
         ]
       },
 
+
       {
         id: 2,
+
         name: "عيادة الشفاء",
+
         icon: "🏨",
-        description: "خدمات طبية متنوعة بأحدث الإمكانيات.",
+
+        description:
+          "خدمات طبية متنوعة بأحدث الإمكانيات.",
+
         services: [
 
           {
             id: 201,
+
             name: "كشف طبي",
+
             icon: "👨‍⚕️",
+
             description:
               "كشف طبي شامل وتقييم الحالة الصحية وتحديد الخطوات المناسبة للعلاج."
           },
 
           {
             id: 202,
+
             name: "استشارة",
+
             icon: "💬",
+
             description:
               "جلسة استشارة مع الطبيب لمناقشة الحالة والإجابة على جميع الاستفسارات."
           }
@@ -796,9 +1199,36 @@
        ===================================================== */
 
     let clinics =
-      JSON.parse(localStorage.getItem("clinicsData")) ||
-      defaultClinics;
+      JSON.parse(
+        localStorage.getItem("clinicsData")
+      ) || defaultClinics;
 
+
+    /*
+      ضمان وجود مصفوفة services لكل عيادة
+    */
+
+    clinics.forEach(clinic => {
+
+      if (!Array.isArray(clinic.services)) {
+        clinic.services = [];
+      }
+
+    });
+
+
+    /* =====================================================
+       متغيرات عامة
+       ===================================================== */
+
+    let currentService = null;
+
+    let currentClinic = null;
+
+
+    /* =====================================================
+       حفظ البيانات
+       ===================================================== */
 
     function saveData() {
 
@@ -811,15 +1241,275 @@
 
 
     /* =====================================================
+       Toast
+       ===================================================== */
+
+    function showToast(message) {
+
+      const toast =
+        document.getElementById("toast");
+
+      toast.textContent = message;
+
+      toast.classList.add("show");
+
+      clearTimeout(
+        window.toastTimer
+      );
+
+      window.toastTimer =
+        setTimeout(() => {
+
+          toast.classList.remove("show");
+
+        }, 2500);
+
+    }
+
+
+    /* =====================================================
+       إدارة جلسة الدخول
+       ===================================================== */
+
+    function isAdminLoggedIn() {
+
+      const loginTime =
+        Number(
+          sessionStorage.getItem(
+            "adminLoginTime"
+          )
+        );
+
+      if (!loginTime) {
+        return false;
+      }
+
+
+      const sessionDuration =
+        ADMIN_SESSION_MINUTES *
+        60 *
+        1000;
+
+
+      if (
+        Date.now() - loginTime >
+        sessionDuration
+      ) {
+
+        sessionStorage.removeItem(
+          "adminLoginTime"
+        );
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+
+
+    function setAdminLoggedIn() {
+
+      sessionStorage.setItem(
+        "adminLoginTime",
+        Date.now().toString()
+      );
+
+    }
+
+
+    function logoutAdmin() {
+
+      sessionStorage.removeItem(
+        "adminLoginTime"
+      );
+
+      showHome();
+
+      showToast(
+        "تم تسجيل الخروج من الإدارة."
+      );
+
+    }
+
+
+    /* =====================================================
+       فتح لوحة الإدارة
+       ===================================================== */
+
+    function openAdmin() {
+
+      if (isAdminLoggedIn()) {
+
+        showAdmin();
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "adminPasswordInput"
+      ).value = "";
+
+      document.getElementById(
+        "passwordError"
+      ).classList.remove("active");
+
+      document.getElementById(
+        "passwordModal"
+      ).classList.add("active");
+
+
+      setTimeout(() => {
+
+        document.getElementById(
+          "adminPasswordInput"
+        ).focus();
+
+      }, 100);
+
+    }
+
+
+    function showAdmin() {
+
+      document.getElementById(
+        "homePage"
+      ).style.display = "none";
+
+      document.getElementById(
+        "servicesPage"
+      ).style.display = "none";
+
+      document.getElementById(
+        "adminPage"
+      ).classList.add("active");
+
+      renderAdmin();
+
+    }
+
+
+    /* =====================================================
+       التحقق من كلمة المرور
+       ===================================================== */
+
+    function checkAdminPassword() {
+
+      const input =
+        document.getElementById(
+          "adminPasswordInput"
+        );
+
+
+      const password =
+        input.value;
+
+
+      if (
+        password ===
+        ADMIN_PASSWORD
+      ) {
+
+        setAdminLoggedIn();
+
+        document.getElementById(
+          "passwordModal"
+        ).classList.remove("active");
+
+        input.value = "";
+
+        showAdmin();
+
+        showToast(
+          "تم تسجيل الدخول بنجاح."
+        );
+
+      } else {
+
+        document.getElementById(
+          "passwordError"
+        ).classList.add("active");
+
+        input.value = "";
+
+        input.focus();
+
+      }
+
+    }
+
+
+    function passwordKeyDown(event) {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        checkAdminPassword();
+
+      }
+
+    }
+
+
+    function togglePasswordVisibility() {
+
+      const input =
+        document.getElementById(
+          "adminPasswordInput"
+        );
+
+
+      if (
+        input.type === "password"
+      ) {
+
+        input.type = "text";
+
+      } else {
+
+        input.type = "password";
+
+      }
+
+    }
+
+
+    function closePasswordOutside(event) {
+
+      if (
+        event.target ===
+        document.getElementById(
+          "passwordModal"
+        )
+      ) {
+
+        document.getElementById(
+          "passwordModal"
+        ).classList.remove("active");
+
+      }
+
+    }
+
+
+    /* =====================================================
        عرض العيادات
        ===================================================== */
 
     function renderClinics() {
 
       const grid =
-        document.getElementById("clinicsGrid");
+        document.getElementById(
+          "clinicsGrid"
+        );
 
       grid.innerHTML = "";
+
 
       if (clinics.length === 0) {
 
@@ -830,6 +1520,7 @@
         `;
 
         return;
+
       }
 
 
@@ -838,24 +1529,30 @@
         const card =
           document.createElement("div");
 
-        card.className = "clinic-card";
+        card.className =
+          "clinic-card";
+
 
         card.onclick = () =>
           openClinic(clinic.id);
 
+
         card.innerHTML = `
 
           <div class="clinic-icon">
-            ${clinic.icon}
+            ${escapeHTML(clinic.icon)}
           </div>
 
-          <h3>${escapeHTML(clinic.name)}</h3>
+          <h3>
+            ${escapeHTML(clinic.name)}
+          </h3>
 
           <span>
             ${clinic.services.length} خدمة متوفرة
           </span>
 
         `;
+
 
         grid.appendChild(card);
 
@@ -868,53 +1565,85 @@
        فتح العيادة
        ===================================================== */
 
-    function openClinic(clinicId) {
+    function openClinic(
+      clinicId,
+      updateURL = true
+    ) {
 
       const clinic =
-        clinics.find(c => c.id === clinicId);
-
-      if (!clinic) return;
-
-
-      document.getElementById("homePage")
-        .style.display = "none";
-
-      document.getElementById("adminPage")
-        .classList.remove("active");
-
-      document.getElementById("servicesPage")
-        .style.display = "block";
+        clinics.find(
+          c => String(c.id) === String(clinicId)
+        );
 
 
-      document.getElementById("clinicHeader")
-        .innerHTML = `
+      if (!clinic) {
 
-          <div class="clinic-header">
+        showHome();
 
-            <div class="clinic-header-icon">
-              ${clinic.icon}
-            </div>
+        return;
 
-            <div>
-              <h2>${escapeHTML(clinic.name)}</h2>
+      }
 
-              <p>
-                ${escapeHTML(clinic.description || "")}
-              </p>
-            </div>
+
+      currentClinic = clinic;
+
+
+      document.getElementById(
+        "homePage"
+      ).style.display = "none";
+
+
+      document.getElementById(
+        "adminPage"
+      ).classList.remove("active");
+
+
+      document.getElementById(
+        "servicesPage"
+      ).style.display = "block";
+
+
+      document.getElementById(
+        "clinicHeader"
+      ).innerHTML = `
+
+        <div class="clinic-header">
+
+          <div class="clinic-header-icon">
+            ${escapeHTML(clinic.icon)}
+          </div>
+
+          <div>
+
+            <h2>
+              ${escapeHTML(clinic.name)}
+            </h2>
+
+            <p>
+              ${escapeHTML(
+                clinic.description || ""
+              )}
+            </p>
 
           </div>
 
-        `;
+        </div>
+
+      `;
 
 
       const grid =
-        document.getElementById("servicesGrid");
+        document.getElementById(
+          "servicesGrid"
+        );
+
 
       grid.innerHTML = "";
 
 
-      if (clinic.services.length === 0) {
+      if (
+        clinic.services.length === 0
+      ) {
 
         grid.innerHTML = `
           <div class="empty">
@@ -922,87 +1651,137 @@
           </div>
         `;
 
-        return;
+      } else {
+
+        clinic.services.forEach(
+          service => {
+
+            const card =
+              document.createElement("div");
+
+            card.className =
+              "service-card";
+
+
+            card.onclick = () =>
+              openService(
+                clinic.id,
+                service.id
+              );
+
+
+            card.innerHTML = `
+
+              <div class="service-icon">
+                ${escapeHTML(service.icon)}
+              </div>
+
+              <h3>
+                ${escapeHTML(service.name)}
+              </h3>
+
+            `;
+
+
+            grid.appendChild(card);
+
+          }
+        );
+
       }
 
 
-      clinic.services.forEach(service => {
+      /*
+        حفظ العيادة الحالية في الرابط
+        حتى لا تضيع عند عمل Refresh.
+      */
 
-        const card =
-          document.createElement("div");
+      if (updateURL) {
 
-        card.className = "service-card";
+        const url =
+          new URL(
+            window.location.href
+          );
 
-        card.onclick = () =>
-          openService(clinic.id, service.id);
+        url.searchParams.set(
+          "clinic",
+          clinic.id
+        );
 
-        card.innerHTML = `
+        history.pushState(
+          { clinicId: clinic.id },
+          "",
+          url
+        );
 
-          <div class="service-icon">
-            ${service.icon}
-          </div>
-
-          <h3>
-            ${escapeHTML(service.name)}
-          </h3>
-
-        `;
-
-        grid.appendChild(card);
-
-      });
+      }
 
     }
 
 
     /* =====================================================
-       فتح تفاصيل الخدمة
+       فتح الخدمة
        ===================================================== */
 
-    let currentService = null;
-    let currentClinic = null;
-
-
-    function openService(clinicId, serviceId) {
+    function openService(
+      clinicId,
+      serviceId
+    ) {
 
       const clinic =
-        clinics.find(c => c.id === clinicId);
+        clinics.find(
+          c => String(c.id) === String(clinicId)
+        );
+
 
       if (!clinic) return;
 
 
       const service =
         clinic.services.find(
-          s => s.id === serviceId
+          s => String(s.id) === String(serviceId)
         );
+
 
       if (!service) return;
 
 
       currentClinic = clinic;
+
       currentService = service;
 
 
-      document.getElementById("modalIcon")
-        .textContent = service.icon;
-
-      document.getElementById("modalTitle")
-        .textContent = service.name;
-
-      document.getElementById("modalDescription")
-        .textContent = service.description;
+      document.getElementById(
+        "modalIcon"
+      ).textContent =
+        service.icon || "🩺";
 
 
-      document.getElementById("serviceModal")
-        .classList.add("active");
+      document.getElementById(
+        "modalTitle"
+      ).textContent =
+        service.name;
+
+
+      document.getElementById(
+        "modalDescription"
+      ).textContent =
+        service.description ||
+        "لا توجد تفاصيل متاحة.";
+
+
+      document.getElementById(
+        "serviceModal"
+      ).classList.add("active");
 
     }
 
 
     function closeModal() {
 
-      document.getElementById("serviceModal")
-        .classList.remove("active");
+      document.getElementById(
+        "serviceModal"
+      ).classList.remove("active");
 
     }
 
@@ -1011,7 +1790,9 @@
 
       if (
         event.target ===
-        document.getElementById("serviceModal")
+        document.getElementById(
+          "serviceModal"
+        )
       ) {
 
         closeModal();
@@ -1027,26 +1808,39 @@
 
     async function shareService() {
 
-      if (!currentService) return;
+      if (
+        !currentService ||
+        !currentClinic
+      ) {
+
+        alert(
+          "لم يتم تحديد الخدمة."
+        );
+
+        return;
+
+      }
 
 
       const service =
         currentService;
 
+      const clinic =
+        currentClinic;
 
-      /*
-        إنشاء Canvas
-        وتحويل تفاصيل الخدمة إلى صورة
-      */
 
       const canvas =
-        document.createElement("canvas");
+        document.createElement(
+          "canvas"
+        );
+
 
       const ctx =
         canvas.getContext("2d");
 
 
       canvas.width = 1080;
+
       canvas.height = 1350;
 
 
@@ -1060,6 +1854,7 @@
           1350
         );
 
+
       gradient.addColorStop(
         0,
         "#0f766e"
@@ -1070,56 +1865,69 @@
         "#14b8a6"
       );
 
-      ctx.fillStyle = gradient;
+
+      ctx.fillStyle =
+        gradient;
+
 
       ctx.fillRect(
         0,
         0,
-        canvas.width,
-        canvas.height
+        1080,
+        1350
       );
 
 
       /* White Card */
 
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle =
+        "#ffffff";
+
 
       roundRect(
         ctx,
+        60,
         70,
-        90,
-        940,
-        1170,
-        35
+        960,
+        1210,
+        40
       );
+
 
       ctx.fill();
 
 
       /* Icon */
 
-      ctx.font = "110px Arial";
+      ctx.textAlign =
+        "center";
 
-      ctx.textAlign = "center";
+
+      ctx.font =
+        "110px Arial";
+
 
       ctx.fillText(
-        service.icon,
+        service.icon || "🩺",
         540,
-        270
+        260
       );
 
 
       /* Title */
 
-      ctx.fillStyle = "#16302f";
+      ctx.fillStyle =
+        "#16302f";
+
 
       ctx.font =
         "bold 52px Arial";
 
+
       ctx.fillText(
         service.name,
         540,
-        390
+        380
       );
 
 
@@ -1128,11 +1936,12 @@
       ctx.fillStyle =
         "#14b8a6";
 
+
       ctx.fillRect(
-        400,
-        430,
-        280,
-        5
+        390,
+        420,
+        300,
+        6
       );
 
 
@@ -1141,16 +1950,19 @@
       ctx.fillStyle =
         "#475b59";
 
+
       ctx.font =
         "32px Arial";
 
+
       wrapText(
         ctx,
-        service.description,
+        service.description ||
+          "لا توجد تفاصيل متاحة.",
         540,
-        530,
-        780,
-        52
+        520,
+        800,
+        55
       );
 
 
@@ -1159,13 +1971,15 @@
       ctx.fillStyle =
         "#0f766e";
 
+
       ctx.font =
-        "bold 28px Arial";
+        "bold 30px Arial";
+
 
       ctx.fillText(
-        currentClinic.name,
+        clinic.name,
         540,
-        1130
+        1110
       );
 
 
@@ -1174,81 +1988,162 @@
       ctx.fillStyle =
         "#94a3a1";
 
+
       ctx.font =
-        "22px Arial";
+        "24px Arial";
+
 
       ctx.fillText(
         "دليل العيادات والخدمات",
         540,
-        1190
+        1170
       );
 
 
-      canvas.toBlob(async blob => {
+      canvas.toBlob(
+        async function(blob) {
 
-        const file =
-          new File(
-            [blob],
-            "service.png",
-            {
-              type: "image/png"
-            }
-          );
+          if (!blob) {
+
+            alert(
+              "حدث خطأ أثناء إنشاء الصورة."
+            );
+
+            return;
+
+          }
 
 
-        /*
-          إذا كان الجهاز يدعم مشاركة الملفات
-        */
+          const safeFileName =
+            (
+              service.name ||
+              "service"
+            )
+              .replace(
+                /[\\/:*?"<>|]/g,
+                ""
+              )
+              .trim() ||
+            "service";
 
-        if (
-          navigator.share &&
-          navigator.canShare &&
-          navigator.canShare({
-            files: [file]
-          })
-        ) {
+
+          const file =
+            new File(
+              [blob],
+              `${safeFileName}.png`,
+              {
+                type: "image/png"
+              }
+            );
+
+
+          /*
+            محاولة المشاركة المباشرة
+          */
 
           try {
 
-            await navigator.share({
-              title: service.name,
-              text: service.description,
-              files: [file]
-            });
+            if (
+              navigator.share &&
+              navigator.canShare &&
+              navigator.canShare({
+                files: [file]
+              })
+            ) {
+
+              await navigator.share({
+
+                title:
+                  service.name,
+
+                text:
+                  `${service.name} - ${clinic.name}`,
+
+                files: [file]
+
+              });
+
+              return;
+
+            }
 
           } catch (error) {
 
             console.log(
-              "تم إلغاء المشاركة"
+              "المشاركة المباشرة غير متاحة:",
+              error
             );
 
           }
 
-        } else {
 
           /*
-            إذا لم يدعم الجهاز المشاركة،
-            يتم تنزيل الصورة
+            البديل:
+            تحميل الصورة
           */
 
-          const link =
-            document.createElement("a");
+          try {
 
-          link.download =
-            "service.png";
+            const imageURL =
+              URL.createObjectURL(
+                blob
+              );
 
-          link.href =
-            canvas.toDataURL("image/png");
 
-          link.click();
+            const downloadLink =
+              document.createElement(
+                "a"
+              );
 
-          alert(
-            "تم إنشاء الصورة وتنزيلها على جهازك."
-          );
 
-        }
+            downloadLink.href =
+              imageURL;
 
-      }, "image/png");
+
+            downloadLink.download =
+              `${safeFileName}.png`;
+
+
+            document.body.appendChild(
+              downloadLink
+            );
+
+
+            downloadLink.click();
+
+
+            downloadLink.remove();
+
+
+            setTimeout(
+              () => {
+
+                URL.revokeObjectURL(
+                  imageURL
+                );
+
+              },
+              1000
+            );
+
+
+            showToast(
+              "تم إنشاء صورة الخدمة وحفظها على جهازك."
+            );
+
+          } catch (error) {
+
+            console.error(error);
+
+            alert(
+              "حدث خطأ أثناء إنشاء صورة الخدمة."
+            );
+
+          }
+
+        },
+        "image/png"
+      );
 
     }
 
@@ -1268,15 +2163,18 @@
 
       ctx.beginPath();
 
+
       ctx.moveTo(
         x + radius,
         y
       );
 
+
       ctx.lineTo(
         x + width - radius,
         y
       );
+
 
       ctx.quadraticCurveTo(
         x + width,
@@ -1285,10 +2183,12 @@
         y + radius
       );
 
+
       ctx.lineTo(
         x + width,
         y + height - radius
       );
+
 
       ctx.quadraticCurveTo(
         x + width,
@@ -1297,10 +2197,12 @@
         y + height
       );
 
+
       ctx.lineTo(
         x + radius,
         y + height
       );
+
 
       ctx.quadraticCurveTo(
         x,
@@ -1309,10 +2211,12 @@
         y + height - radius
       );
 
+
       ctx.lineTo(
         x,
         y + radius
       );
+
 
       ctx.quadraticCurveTo(
         x,
@@ -1320,6 +2224,7 @@
         x + radius,
         y
       );
+
 
       ctx.closePath();
 
@@ -1336,7 +2241,9 @@
     ) {
 
       const words =
-        text.split(" ");
+        String(text || "")
+          .split(/\s+/);
+
 
       let line = "";
 
@@ -1354,12 +2261,16 @@
           words[i] +
           " ";
 
+
         const metrics =
-          ctx.measureText(testLine);
+          ctx.measureText(
+            testLine
+          );
+
 
         if (
           metrics.width >
-          maxWidth &&
+            maxWidth &&
           i > 0
         ) {
 
@@ -1370,13 +2281,19 @@
 
         } else {
 
-          line = testLine;
+          line =
+            testLine;
 
         }
 
       }
 
-      lines.push(line);
+
+      if (line) {
+
+        lines.push(line);
+
+      }
 
 
       lines.forEach(
@@ -1386,32 +2303,12 @@
             line,
             x,
             y +
-            index *
-            lineHeight
+              index *
+              lineHeight
           );
 
         }
       );
-
-    }
-
-
-    /* =====================================================
-       لوحة التحكم
-       ===================================================== */
-
-    function openAdmin() {
-
-      document.getElementById("homePage")
-        .style.display = "none";
-
-      document.getElementById("servicesPage")
-        .style.display = "none";
-
-      document.getElementById("adminPage")
-        .classList.add("active");
-
-      renderAdmin();
 
     }
 
@@ -1423,16 +2320,22 @@
     function addClinic() {
 
       const name =
-        document.getElementById("clinicName")
-          .value.trim();
+        document.getElementById(
+          "clinicName"
+        ).value.trim();
+
 
       const icon =
-        document.getElementById("clinicIcon")
-          .value.trim() || "🏥";
+        document.getElementById(
+          "clinicIcon"
+        ).value.trim() ||
+        "🏥";
+
 
       const description =
-        document.getElementById("clinicDescription")
-          .value.trim();
+        document.getElementById(
+          "clinicDescription"
+        ).value.trim();
 
 
       if (!name) {
@@ -1468,17 +2371,22 @@
       renderClinics();
 
 
-      document.getElementById("clinicName")
-        .value = "";
-
-      document.getElementById("clinicDescription")
-        .value = "";
-
-      document.getElementById("clinicIcon")
-        .value = "🏥";
+      document.getElementById(
+        "clinicName"
+      ).value = "";
 
 
-      alert(
+      document.getElementById(
+        "clinicDescription"
+      ).value = "";
+
+
+      document.getElementById(
+        "clinicIcon"
+      ).value = "🏥";
+
+
+      showToast(
         "تمت إضافة العيادة بنجاح."
       );
 
@@ -1492,7 +2400,10 @@
     function renderAdmin() {
 
       const container =
-        document.getElementById("adminClinics");
+        document.getElementById(
+          "adminClinics"
+        );
+
 
       container.innerHTML = "";
 
@@ -1506,204 +2417,378 @@
         `;
 
         return;
+
       }
 
 
-      clinics.forEach(clinic => {
+      clinics.forEach(
+        clinic => {
 
-        const clinicDiv =
-          document.createElement("div");
-
-        clinicDiv.className =
-          "admin-clinic";
-
-
-        clinicDiv.innerHTML = `
-
-          <div class="admin-clinic-header">
-
-            <div>
-              <strong>
-                ${clinic.icon}
-                ${escapeHTML(clinic.name)}
-              </strong>
-
-              <div style="
-                color:#6b7c7b;
-                font-size:13px;
-                margin-top:5px;
-              ">
-                ${clinic.services.length} خدمة
-              </div>
-            </div>
-
-            <button
-              class="danger-btn"
-              onclick="deleteClinic(${clinic.id})"
-            >
-              حذف العيادة
-            </button>
-
-          </div>
+          const clinicDiv =
+            document.createElement(
+              "div"
+            );
 
 
-          <div>
-
-            <strong>
-              الخدمات:
-            </strong>
-
-            <div id="services-${clinic.id}">
-            </div>
-
-          </div>
+          clinicDiv.className =
+            "admin-clinic";
 
 
-          <hr style="
-            border:none;
-            border-top:1px solid #e2e8e7;
-            margin:18px 0;
-          ">
+          clinicDiv.innerHTML = `
 
+            <div class="admin-clinic-header">
 
-          <h4 style="margin-bottom:12px;">
-            ➕ إضافة خدمة
-          </h4>
+              <div>
 
+                <strong>
+                  ${escapeHTML(clinic.icon)}
+                  ${escapeHTML(clinic.name)}
+                </strong>
 
-          <div class="form-grid">
-
-            <div class="form-group">
-
-              <label>
-                اسم الخدمة
-              </label>
-
-              <input
-                id="service-name-${clinic.id}"
-                placeholder="مثال: تبييض الأسنان"
-              />
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label>
-                الأيقونة
-              </label>
-
-              <input
-                id="service-icon-${clinic.id}"
-                value="🦷"
-                placeholder="🦷"
-              />
-
-            </div>
-
-
-            <div class="form-group full">
-
-              <label>
-                تفاصيل الخدمة
-              </label>
-
-              <textarea
-                id="service-description-${clinic.id}"
-                placeholder="اكتب تفاصيل الخدمة..."
-              ></textarea>
-
-            </div>
-
-          </div>
-
-
-          <button
-            class="primary-btn"
-            onclick="addService(${clinic.id})"
-          >
-            إضافة الخدمة
-          </button>
-
-        `;
-
-
-        container.appendChild(
-          clinicDiv
-        );
-
-
-        const servicesContainer =
-          document.getElementById(
-            `services-${clinic.id}`
-          );
-
-
-        if (
-          clinic.services.length === 0
-        ) {
-
-          servicesContainer.innerHTML = `
-            <div style="
-              color:#6b7c7b;
-              font-size:13px;
-              margin-top:10px;
-            ">
-              لا توجد خدمات.
-            </div>
-          `;
-
-        } else {
-
-          clinic.services.forEach(
-            service => {
-
-              const div =
-                document.createElement("div");
-
-              div.className =
-                "admin-service";
-
-              div.innerHTML = `
-
-                <div class="admin-service-info">
-
-                  <span style="
-                    font-size:25px;
-                  ">
-                    ${service.icon}
-                  </span>
-
-                  <span>
-                    ${escapeHTML(service.name)}
-                  </span>
-
+                <div style="
+                  color:#6b7c7b;
+                  font-size:13px;
+                  margin-top:5px;
+                ">
+                  ${clinic.services.length}
+                  خدمة
                 </div>
+
+              </div>
+
+
+              <div class="admin-clinic-actions">
 
                 <button
                   class="danger-btn"
-                  onclick="
-                    deleteService(
-                      ${clinic.id},
-                      ${service.id}
-                    )
-                  "
+                  onclick="deleteClinic(${clinic.id})"
                 >
-                  حذف
+                  حذف العيادة
                 </button>
 
-              `;
+              </div>
 
-              servicesContainer.appendChild(
-                div
-              );
+            </div>
 
-            }
+
+            <div>
+
+              <strong>
+                الخدمات:
+              </strong>
+
+              <div
+                id="services-${clinic.id}"
+              ></div>
+
+            </div>
+
+
+            <hr style="
+              border:none;
+              border-top:1px solid #e2e8e7;
+              margin:18px 0;
+            ">
+
+
+            <h4 style="margin-bottom:12px;">
+              ➕ إضافة خدمة
+            </h4>
+
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label>
+                  اسم الخدمة
+                </label>
+
+                <input
+                  type="text"
+                  id="service-name-${clinic.id}"
+                  placeholder="مثال: تبييض الأسنان"
+                />
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  الأيقونة
+                </label>
+
+                <input
+                  type="text"
+                  id="service-icon-${clinic.id}"
+                  value="🦷"
+                  placeholder="🦷"
+                />
+
+              </div>
+
+
+              <div class="form-group full">
+
+                <label>
+                  تفاصيل الخدمة
+                </label>
+
+                <textarea
+                  id="service-description-${clinic.id}"
+                  placeholder="اكتب تفاصيل الخدمة..."
+                ></textarea>
+
+              </div>
+
+            </div>
+
+
+            <button
+              class="primary-btn"
+              onclick="addService(${clinic.id})"
+            >
+              إضافة الخدمة
+            </button>
+
+          `;
+
+
+          container.appendChild(
+            clinicDiv
           );
 
-        }
 
-      });
+          const servicesContainer =
+            document.getElementById(
+              `services-${clinic.id}`
+            );
+
+
+          if (
+            clinic.services.length === 0
+          ) {
+
+            servicesContainer.innerHTML = `
+              <div style="
+                color:#6b7c7b;
+                font-size:13px;
+                margin-top:10px;
+              ">
+                لا توجد خدمات.
+              </div>
+            `;
+
+          } else {
+
+            clinic.services.forEach(
+              (service, index) => {
+
+                const div =
+                  document.createElement(
+                    "div"
+                  );
+
+
+                div.className =
+                  "admin-service";
+
+
+                div.innerHTML = `
+
+                  <div class="admin-service-info">
+
+                    <div
+                      class="admin-service-number"
+                    >
+                      ${index + 1}
+                    </div>
+
+                    <span style="
+                      font-size:25px;
+                    ">
+                      ${escapeHTML(service.icon)}
+                    </span>
+
+                    <div>
+
+                      <strong>
+                        ${escapeHTML(service.name)}
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+
+                  <div
+                    class="admin-service-actions"
+                  >
+
+                    <button
+                      class="move-btn"
+                      onclick="
+                        moveServiceUp(
+                          ${clinic.id},
+                          ${service.id}
+                        )
+                      "
+                      ${
+                        index === 0
+                          ? "disabled"
+                          : ""
+                      }
+                      title="تحريك لأعلى"
+                    >
+                      ↑
+                    </button>
+
+
+                    <button
+                      class="move-btn"
+                      onclick="
+                        moveServiceDown(
+                          ${clinic.id},
+                          ${service.id}
+                        )
+                      "
+                      ${
+                        index ===
+                        clinic.services.length - 1
+                          ? "disabled"
+                          : ""
+                      }
+                      title="تحريك لأسفل"
+                    >
+                      ↓
+                    </button>
+
+
+                    <button
+                      class="edit-btn"
+                      onclick="
+                        toggleEditService(
+                          ${clinic.id},
+                          ${service.id}
+                        )
+                      "
+                    >
+                      ✏️ تعديل
+                    </button>
+
+
+                    <button
+                      class="danger-btn"
+                      onclick="
+                        deleteService(
+                          ${clinic.id},
+                          ${service.id}
+                        )
+                      "
+                    >
+                      حذف
+                    </button>
+
+                  </div>
+
+
+                  <div
+                    id="edit-${clinic.id}-${service.id}"
+                    class="edit-form"
+                  >
+
+                    <div class="form-grid">
+
+                      <div class="form-group">
+
+                        <label>
+                          اسم الخدمة
+                        </label>
+
+                        <input
+                          type="text"
+                          id="edit-name-${clinic.id}-${service.id}"
+                          value="${escapeHTML(service.name)}"
+                        />
+
+                      </div>
+
+
+                      <div class="form-group">
+
+                        <label>
+                          الأيقونة
+                        </label>
+
+                        <input
+                          type="text"
+                          id="edit-icon-${clinic.id}-${service.id}"
+                          value="${escapeHTML(service.icon)}"
+                        />
+
+                      </div>
+
+
+                      <div class="form-group full">
+
+                        <label>
+                          تفاصيل الخدمة
+                        </label>
+
+                        <textarea
+                          id="edit-description-${clinic.id}-${service.id}"
+                        >${escapeHTML(service.description || "")}</textarea>
+
+                      </div>
+
+                    </div>
+
+
+                    <div class="edit-form-buttons">
+
+                      <button
+                        class="primary-btn"
+                        onclick="
+                          saveEditedService(
+                            ${clinic.id},
+                            ${service.id}
+                          )
+                        "
+                      >
+                        💾 حفظ التعديل
+                      </button>
+
+                      <button
+                        class="secondary-btn"
+                        onclick="
+                          toggleEditService(
+                            ${clinic.id},
+                            ${service.id}
+                          )
+                        "
+                      >
+                        إلغاء
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                `;
+
+
+                servicesContainer.appendChild(
+                  div
+                );
+
+              }
+            );
+
+          }
+
+        }
+      );
 
     }
 
@@ -1716,8 +2801,9 @@
 
       const clinic =
         clinics.find(
-          c => c.id === clinicId
+          c => String(c.id) === String(clinicId)
         );
+
 
       if (!clinic) return;
 
@@ -1731,7 +2817,8 @@
       const icon =
         document.getElementById(
           `service-icon-${clinicId}`
-        ).value.trim() || "🩺";
+        ).value.trim() ||
+        "🩺";
 
 
       const description =
@@ -1771,8 +2858,287 @@
       renderClinics();
 
 
-      alert(
+      showToast(
         "تمت إضافة الخدمة بنجاح."
+      );
+
+    }
+
+
+    /* =====================================================
+       فتح / إغلاق تعديل الخدمة
+       ===================================================== */
+
+    function toggleEditService(
+      clinicId,
+      serviceId
+    ) {
+
+      const form =
+        document.getElementById(
+          `edit-${clinicId}-${serviceId}`
+        );
+
+
+      if (!form) return;
+
+
+      form.classList.toggle(
+        "active"
+      );
+
+    }
+
+
+    /* =====================================================
+       حفظ تعديل الخدمة
+       ===================================================== */
+
+    function saveEditedService(
+      clinicId,
+      serviceId
+    ) {
+
+      const clinic =
+        clinics.find(
+          c => String(c.id) === String(clinicId)
+        );
+
+
+      if (!clinic) return;
+
+
+      const service =
+        clinic.services.find(
+          s => String(s.id) === String(serviceId)
+        );
+
+
+      if (!service) return;
+
+
+      const name =
+        document.getElementById(
+          `edit-name-${clinicId}-${serviceId}`
+        ).value.trim();
+
+
+      const icon =
+        document.getElementById(
+          `edit-icon-${clinicId}-${serviceId}`
+        ).value.trim() ||
+        "🩺";
+
+
+      const description =
+        document.getElementById(
+          `edit-description-${clinicId}-${serviceId}`
+        ).value.trim();
+
+
+      if (!name) {
+
+        alert(
+          "من فضلك اكتب اسم الخدمة."
+        );
+
+        return;
+
+      }
+
+
+      service.name =
+        name;
+
+      service.icon =
+        icon;
+
+      service.description =
+        description;
+
+
+      saveData();
+
+      renderAdmin();
+
+      renderClinics();
+
+
+      /*
+        إذا كان المستخدم داخل نفس العيادة،
+        نعيد عرضها بالتحديث الجديد.
+      */
+
+      if (currentClinic) {
+
+        const updatedClinic =
+          clinics.find(
+            c =>
+              String(c.id) ===
+              String(currentClinic.id)
+          );
+
+
+        if (updatedClinic) {
+
+          openClinic(
+            updatedClinic.id,
+            false
+          );
+
+        }
+
+      }
+
+
+      showToast(
+        "تم حفظ تعديل الخدمة."
+      );
+
+    }
+
+
+    /* =====================================================
+       تحريك الخدمة لأعلى
+       ===================================================== */
+
+    function moveServiceUp(
+      clinicId,
+      serviceId
+    ) {
+
+      const clinic =
+        clinics.find(
+          c => String(c.id) === String(clinicId)
+        );
+
+
+      if (!clinic) return;
+
+
+      const index =
+        clinic.services.findIndex(
+          s =>
+            String(s.id) ===
+            String(serviceId)
+        );
+
+
+      if (
+        index <= 0
+      ) {
+
+        return;
+
+      }
+
+
+      [
+        clinic.services[index - 1],
+        clinic.services[index]
+      ] = [
+        clinic.services[index],
+        clinic.services[index - 1]
+      ];
+
+
+      saveData();
+
+      renderAdmin();
+
+      renderClinics();
+
+
+      if (
+        currentClinic &&
+        String(currentClinic.id) ===
+          String(clinicId)
+      ) {
+
+        openClinic(
+          clinicId,
+          false
+        );
+
+      }
+
+
+      showToast(
+        "تم تحريك الخدمة لأعلى."
+      );
+
+    }
+
+
+    /* =====================================================
+       تحريك الخدمة لأسفل
+       ===================================================== */
+
+    function moveServiceDown(
+      clinicId,
+      serviceId
+    ) {
+
+      const clinic =
+        clinics.find(
+          c => String(c.id) === String(clinicId)
+        );
+
+
+      if (!clinic) return;
+
+
+      const index =
+        clinic.services.findIndex(
+          s =>
+            String(s.id) ===
+            String(serviceId)
+        );
+
+
+      if (
+        index === -1 ||
+        index >=
+          clinic.services.length - 1
+      ) {
+
+        return;
+
+      }
+
+
+      [
+        clinic.services[index],
+        clinic.services[index + 1]
+      ] = [
+        clinic.services[index + 1],
+        clinic.services[index]
+      ];
+
+
+      saveData();
+
+      renderAdmin();
+
+      renderClinics();
+
+
+      if (
+        currentClinic &&
+        String(currentClinic.id) ===
+          String(clinicId)
+      ) {
+
+        openClinic(
+          clinicId,
+          false
+        );
+
+      }
+
+
+      showToast(
+        "تم تحريك الخدمة لأسفل."
       );
 
     }
@@ -1782,11 +3148,13 @@
        حذف عيادة
        ===================================================== */
 
-    function deleteClinic(clinicId) {
+    function deleteClinic(
+      clinicId
+    ) {
 
       const clinic =
         clinics.find(
-          c => c.id === clinicId
+          c => String(c.id) === String(clinicId)
         );
 
 
@@ -1804,7 +3172,9 @@
 
       clinics =
         clinics.filter(
-          c => c.id !== clinicId
+          c =>
+            String(c.id) !==
+            String(clinicId)
         );
 
 
@@ -1813,6 +3183,11 @@
       renderAdmin();
 
       renderClinics();
+
+
+      showToast(
+        "تم حذف العيادة."
+      );
 
     }
 
@@ -1828,7 +3203,7 @@
 
       const clinic =
         clinics.find(
-          c => c.id === clinicId
+          c => String(c.id) === String(clinicId)
         );
 
 
@@ -1837,7 +3212,7 @@
 
       const service =
         clinic.services.find(
-          s => s.id === serviceId
+          s => String(s.id) === String(serviceId)
         );
 
 
@@ -1855,7 +3230,9 @@
 
       clinic.services =
         clinic.services.filter(
-          s => s.id !== serviceId
+          s =>
+            String(s.id) !==
+            String(serviceId)
         );
 
 
@@ -1864,6 +3241,11 @@
       renderAdmin();
 
       renderClinics();
+
+
+      showToast(
+        "تم حذف الخدمة."
+      );
 
     }
 
@@ -1874,18 +3256,135 @@
 
     function showHome() {
 
-      document.getElementById("homePage")
-        .style.display = "block";
+      closeModal();
 
-      document.getElementById("servicesPage")
-        .style.display = "none";
 
-      document.getElementById("adminPage")
-        .classList.remove("active");
+      document.getElementById(
+        "homePage"
+      ).style.display = "block";
+
+
+      document.getElementById(
+        "servicesPage"
+      ).style.display = "none";
+
+
+      document.getElementById(
+        "adminPage"
+      ).classList.remove("active");
+
+
+      currentClinic = null;
+
+      currentService = null;
+
+
+      /*
+        إزالة رقم العيادة من الرابط
+      */
+
+      const url =
+        new URL(
+          window.location.href
+        );
+
+
+      url.searchParams.delete(
+        "clinic"
+      );
+
+
+      history.pushState(
+        {},
+        "",
+        url
+      );
+
 
       renderClinics();
 
     }
+
+
+    /* =====================================================
+       التعامل مع Refresh / Back / Forward
+       ===================================================== */
+
+    function loadPageFromURL() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      const clinicId =
+        params.get("clinic");
+
+
+      if (clinicId) {
+
+        const clinic =
+          clinics.find(
+            c =>
+              String(c.id) ===
+              String(clinicId)
+          );
+
+
+        if (clinic) {
+
+          openClinic(
+            clinic.id,
+            false
+          );
+
+          return;
+
+        }
+
+      }
+
+
+      showHomeWithoutHistory();
+
+    }
+
+
+    function showHomeWithoutHistory() {
+
+      closeModal();
+
+
+      document.getElementById(
+        "homePage"
+      ).style.display = "block";
+
+
+      document.getElementById(
+        "servicesPage"
+      ).style.display = "none";
+
+
+      document.getElementById(
+        "adminPage"
+      ).classList.remove("active");
+
+
+      currentClinic = null;
+
+      currentService = null;
+
+
+      renderClinics();
+
+    }
+
+
+    window.addEventListener(
+      "popstate",
+      loadPageFromURL
+    );
 
 
     /* =====================================================
@@ -1909,6 +3408,7 @@
 
             };
 
+
             return chars[match];
 
           }
@@ -1922,6 +3422,8 @@
        ===================================================== */
 
     renderClinics();
+
+    loadPageFromURL();
 
   </script>
 
