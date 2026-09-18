@@ -929,100 +929,58 @@
 
   <!-- ================= SERVICE MODAL ================= -->
 
-<div
-  id="serviceModal"
-  class="modal-overlay"
-  onclick="closeModalOutside(event)"
->
+  <div
+    id="serviceModal"
+    class="modal-overlay"
+    onclick="closeModalOutside(event)"
+  >
 
-  <div class="modal service-details-modal">
+    <div class="modal">
 
-    <div class="modal-top">
+      <div class="modal-top">
 
-      <div
-        id="modalIcon"
-        class="modal-icon"
-      >
-        🦷
-      </div>
+        <div
+          id="modalIcon"
+          class="modal-icon"
+        >
+          🦷
+        </div>
 
-      <h2 id="modalTitle">
-        اسم الخدمة
-      </h2>
-
-    </div>
-
-    <div class="modal-body">
-
-      <div class="service-table-wrapper">
-
-        <table class="service-table">
-
-          <thead>
-            <tr>
-              <th>اسم الخدمة</th>
-              <th>السعر</th>
-              <th>ملاحظات</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            <tr>
-
-              <td
-                id="modalServiceName"
-                class="service-name-cell"
-              >
-                —
-              </td>
-
-              <td
-                id="modalPrice"
-                class="service-price-cell"
-              >
-                —
-              </td>
-
-              <td
-                id="modalDescription"
-                class="service-notes-cell"
-              >
-                —
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
+        <h2 id="modalTitle">
+          اسم الخدمة
+        </h2>
 
       </div>
 
+      <div class="modal-body">
 
-      <div class="modal-buttons">
+        <p id="modalDescription">
+          تفاصيل الخدمة
+        </p>
 
-        <button
-          class="share-btn"
-          onclick="shareService()"
-        >
-          📤 مشاركة كصورة
-        </button>
+        <div class="modal-buttons">
 
-        <button
-          class="close-btn"
-          onclick="closeModal()"
-        >
-          إغلاق
-        </button>
+          <button
+            class="share-btn"
+            onclick="shareService()"
+          >
+            📤 مشاركة كصورة
+          </button>
+
+          <button
+            class="close-btn"
+            onclick="closeModal()"
+          >
+            إغلاق
+          </button>
+
+        </div>
 
       </div>
 
     </div>
 
   </div>
-
-</div>
 
 
   <!-- ================= PASSWORD MODAL ================= -->
