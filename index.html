@@ -309,9 +309,126 @@
       padding: 25px;
     }
 
-    .modal-body p {
-      color: #475b59;
+    /* ================= SERVICE DETAILS MODAL ================= */
+
+    .service-details-modal {
+      max-width: 850px;
+
+      /*
+        تحديد أقصى ارتفاع للنافذة حتى لا تخرج
+        خارج الشاشة مهما كان حجم التفاصيل.
+      */
+      max-height: calc(100vh - 40px);
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-details-modal .modal-top {
+      flex-shrink: 0;
+    }
+
+    .service-details-modal .modal-body {
+      overflow-y: auto;
+
+      /*
+        السماح للنافذة بالتمدد عند وجود محتوى،
+        مع وضع حد أقصى للارتفاع.
+      */
+      max-height: calc(100vh - 260px);
+
+      scrollbar-width: thin;
+      scrollbar-color: var(--secondary) #eef2f2;
+    }
+
+    .service-details-modal .modal-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .service-details-modal .modal-body::-webkit-scrollbar-track {
+      background: #eef2f2;
+      border-radius: 10px;
+    }
+
+    .service-details-modal .modal-body::-webkit-scrollbar-thumb {
+      background: var(--secondary);
+      border-radius: 10px;
+    }
+
+    /* ================= SERVICE TABLE ================= */
+
+    .service-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .service-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+      background: white;
+    }
+
+    .service-table th {
+      background: #e6fffb;
+      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: 900;
+      padding: 15px 12px;
+      text-align: center;
+      border-bottom: 2px solid #99f6e4;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .service-table td {
+      padding: 18px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
       line-height: 1.9;
+    }
+
+    .service-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* اسم الخدمة */
+
+    .service-name-cell {
+      width: 25%;
+      font-weight: 900;
+      color: var(--text);
+      font-size: 16px;
+      text-align: center;
+    }
+
+    /* السعر */
+
+    .service-price-cell {
+      width: 20%;
+      font-weight: 900;
+      color: var(--primary);
+      font-size: 17px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    /* الملاحظات */
+
+    .service-notes-cell {
+      width: 55%;
+      color: #263f3d;
+
+      /*
+        الخط أصبح Bold وواضح كما طلبت.
+      */
+      font-size: 16px;
+      font-weight: 700;
+
+      text-align: right;
       white-space: pre-line;
     }
 
@@ -527,6 +644,13 @@
       flex-shrink: 0;
     }
 
+    .service-price-display {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
     .edit-form {
       background: #f0fdfa;
       border: 1px solid #99f6e4;
@@ -725,6 +849,61 @@
       .admin-service-actions button {
         flex: 1;
       }
+
+      /* ================= MOBILE SERVICE MODAL ================= */
+
+      .service-details-modal {
+        max-height: calc(100vh - 20px);
+        border-radius: 18px;
+      }
+
+      .service-details-modal .modal-top {
+        padding: 20px 15px;
+      }
+
+      .service-details-modal .modal-icon {
+        font-size: 42px;
+        margin-bottom: 5px;
+      }
+
+      .service-details-modal .modal-top h2 {
+        font-size: 20px;
+      }
+
+      .service-details-modal .modal-body {
+        padding: 15px;
+        max-height: calc(100vh - 190px);
+      }
+
+      .service-table {
+        /*
+          يسمح بالتمرير الأفقي على الشاشات الصغيرة
+          بدل ضغط الأعمدة بشكل غير مريح.
+        */
+        min-width: 500px;
+      }
+
+      .service-table th {
+        padding: 12px 10px;
+        font-size: 14px;
+      }
+
+      .service-table td {
+        padding: 14px 10px;
+      }
+
+      .service-name-cell {
+        font-size: 15px;
+      }
+
+      .service-price-cell {
+        font-size: 15px;
+      }
+
+      .service-notes-cell {
+        font-size: 15px;
+      }
+
     }
   </style>
 </head>
@@ -935,7 +1114,7 @@
     onclick="closeModalOutside(event)"
   >
 
-    <div class="modal">
+    <div class="modal service-details-modal">
 
       <div class="modal-top">
 
@@ -954,9 +1133,53 @@
 
       <div class="modal-body">
 
-        <p id="modalDescription">
-          تفاصيل الخدمة
-        </p>
+        <div class="service-table-wrapper">
+
+          <table class="service-table">
+
+            <thead>
+
+              <tr>
+                <th>اسم الخدمة</th>
+                <th>السعر</th>
+                <th>ملاحظات</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr>
+
+                <td
+                  id="modalServiceName"
+                  class="service-name-cell"
+                >
+                  —
+                </td>
+
+                <td
+                  id="modalPrice"
+                  class="service-price-cell"
+                >
+                  —
+                </td>
+
+                <td
+                  id="modalDescription"
+                  class="service-notes-cell"
+                >
+                  —
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
 
         <div class="modal-buttons">
 
@@ -1081,20 +1304,7 @@
        إعدادات الموقع
        ===================================================== */
 
-    /*
-      غيّر كلمة المرور من هنا فقط.
-
-      كلمة المرور الحالية:
-      1234
-    */
-
     const ADMIN_PASSWORD = "1234";
-
-
-    /*
-      مدة جلسة الإدارة بالدقائق.
-      بعد انتهاء المدة سيحتاج المستخدم لتسجيل الدخول مرة أخرى.
-    */
 
     const ADMIN_SESSION_MINUTES = 60;
 
@@ -1124,6 +1334,8 @@
 
             icon: "🦷",
 
+            price: "15 د.ك",
+
             description:
               "خدمة تنظيف الأسنان وإزالة الجير والتصبغات للحصول على أسنان أكثر نظافة وصحة."
           },
@@ -1135,6 +1347,8 @@
 
             icon: "✨",
 
+            price: "30 د.ك",
+
             description:
               "جلسة تبييض احترافية تساعد على تفتيح لون الأسنان والحصول على ابتسامة أكثر إشراقًا."
           },
@@ -1145,6 +1359,8 @@
             name: "فحص شامل",
 
             icon: "🩺",
+
+            price: "10 د.ك",
 
             description:
               "فحص شامل للحالة الصحية مع تقييم الحالة وتقديم التوصيات المناسبة."
@@ -1173,6 +1389,8 @@
 
             icon: "👨‍⚕️",
 
+            price: "20 د.ك",
+
             description:
               "كشف طبي شامل وتقييم الحالة الصحية وتحديد الخطوات المناسبة للعلاج."
           },
@@ -1183,6 +1401,8 @@
             name: "استشارة",
 
             icon: "💬",
+
+            price: "15 د.ك",
 
             description:
               "جلسة استشارة مع الطبيب لمناقشة الحالة والإجابة على جميع الاستفسارات."
@@ -1204,15 +1424,34 @@
       ) || defaultClinics;
 
 
-    /*
-      ضمان وجود مصفوفة services لكل عيادة
-    */
-
     clinics.forEach(clinic => {
 
       if (!Array.isArray(clinic.services)) {
         clinic.services = [];
       }
+
+    });
+
+
+    /*
+      دعم البيانات القديمة:
+      إذا كانت الخدمة موجودة بالفعل في LocalStorage
+      ولم يكن لها price، يتم إعطاؤها قيمة فارغة.
+    */
+
+    clinics.forEach(clinic => {
+
+      clinic.services.forEach(service => {
+
+        if (
+          typeof service.price === "undefined"
+        ) {
+
+          service.price = "";
+
+        }
+
+      });
 
     });
 
@@ -1247,7 +1486,9 @@
     function showToast(message) {
 
       const toast =
-        document.getElementById("toast");
+        document.getElementById(
+          "toast"
+        );
 
       toast.textContent = message;
 
@@ -1691,11 +1932,6 @@
       }
 
 
-      /*
-        حفظ العيادة الحالية في الرابط
-        حتى لا تضيع عند عمل Refresh.
-      */
-
       if (updateURL) {
 
         const url =
@@ -1763,12 +1999,42 @@
         service.name;
 
 
+      /*
+        اسم الخدمة
+      */
+
+      document.getElementById(
+        "modalServiceName"
+      ).textContent =
+        service.name || "—";
+
+
+      /*
+        السعر
+      */
+
+      document.getElementById(
+        "modalPrice"
+      ).textContent =
+        service.price
+          ? service.price
+          : "—";
+
+
+      /*
+        الملاحظات والتفاصيل
+      */
+
       document.getElementById(
         "modalDescription"
       ).textContent =
         service.description ||
-        "لا توجد تفاصيل متاحة.";
+        "لا توجد ملاحظات متاحة.";
 
+
+      /*
+        فتح النافذة
+      */
 
       document.getElementById(
         "serviceModal"
@@ -1945,24 +2211,92 @@
       );
 
 
-      /* Description */
+      /* =================
+         Service Name
+         ================= */
 
       ctx.fillStyle =
-        "#475b59";
-
+        "#16302f";
 
       ctx.font =
-        "32px Arial";
+        "bold 32px Arial";
+
+      ctx.textAlign =
+        "right";
+
+      ctx.fillText(
+        "اسم الخدمة:",
+        940,
+        510
+      );
+
+      ctx.font =
+        "bold 30px Arial";
+
+      ctx.fillText(
+        service.name || "—",
+        700,
+        510
+      );
 
 
-      wrapText(
+      /* =================
+         Price
+         ================= */
+
+      ctx.fillStyle =
+        "#0f766e";
+
+      ctx.font =
+        "bold 32px Arial";
+
+      ctx.fillText(
+        "السعر:",
+        940,
+        590
+      );
+
+      ctx.font =
+        "bold 30px Arial";
+
+      ctx.fillText(
+        service.price || "—",
+        700,
+        590
+      );
+
+
+      /* =================
+         Description
+         ================= */
+
+      ctx.fillStyle =
+        "#16302f";
+
+      ctx.font =
+        "bold 32px Arial";
+
+      ctx.fillText(
+        "ملاحظات:",
+        940,
+        680
+      );
+
+
+      ctx.fillStyle =
+        "#263f3d";
+
+      ctx.font =
+        "bold 29px Arial";
+
+      wrapTextRTL(
         ctx,
         service.description ||
-          "لا توجد تفاصيل متاحة.",
-        540,
-        520,
+          "لا توجد ملاحظات متاحة.",
+        940,
+        740,
         800,
-        55
+        52
       );
 
 
@@ -1971,10 +2305,11 @@
       ctx.fillStyle =
         "#0f766e";
 
-
       ctx.font =
         "bold 30px Arial";
 
+      ctx.textAlign =
+        "center";
 
       ctx.fillText(
         clinic.name,
@@ -1988,10 +2323,8 @@
       ctx.fillStyle =
         "#94a3a1";
 
-
       ctx.font =
         "24px Arial";
-
 
       ctx.fillText(
         "دليل العيادات والخدمات",
@@ -2037,10 +2370,6 @@
             );
 
 
-          /*
-            محاولة المشاركة المباشرة
-          */
-
           try {
 
             if (
@@ -2076,11 +2405,6 @@
 
           }
 
-
-          /*
-            البديل:
-            تحميل الصورة
-          */
 
           try {
 
