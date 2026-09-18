@@ -248,7 +248,7 @@
       font-size: 16px;
     }
 
-    /* ================= MODAL ================= */
+    /* ================= SERVICE MODAL ================= */
 
     .modal-overlay {
       position: fixed;
@@ -267,11 +267,14 @@
 
     .modal {
       width: 100%;
-      max-width: 550px;
+      max-width: 650px;
+      max-height: calc(100vh - 40px);
       background: white;
       border-radius: 25px;
       overflow: hidden;
       animation: modalIn 0.25s ease;
+      display: flex;
+      flex-direction: column;
     }
 
     @keyframes modalIn {
@@ -292,8 +295,9 @@
         var(--secondary)
       );
       color: white;
-      padding: 28px;
+      padding: 25px;
       text-align: center;
+      flex-shrink: 0;
     }
 
     .modal-icon {
@@ -307,12 +311,76 @@
 
     .modal-body {
       padding: 25px;
+      overflow-y: auto;
+      min-height: 0;
     }
 
-    .modal-body p {
-      color: #475b59;
-      line-height: 1.9;
-      white-space: pre-line;
+    /* ================= SERVICE TABLE ================= */
+
+    .service-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .service-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      background: white;
+    }
+
+    .service-table th,
+    .service-table td {
+      border-bottom: 1px solid var(--border);
+      padding: 15px 12px;
+      text-align: right;
+      vertical-align: top;
+      word-break: break-word;
+    }
+
+    .service-table th {
+      background: #f0fdfa;
+      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .service-table td {
+      color: #263b39;
+      font-size: 15px;
+      line-height: 1.8;
+      font-weight: bold;
+    }
+
+    .service-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .service-table th:nth-child(1),
+    .service-table td:nth-child(1) {
+      width: 32%;
+    }
+
+    .service-table th:nth-child(2),
+    .service-table td:nth-child(2) {
+      width: 18%;
+      text-align: center;
+    }
+
+    .service-table th:nth-child(3),
+    .service-table td:nth-child(3) {
+      width: 50%;
+    }
+
+    .service-price {
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .no-price {
+      color: var(--muted);
     }
 
     .modal-buttons {
@@ -553,6 +621,7 @@
 
     .password-content {
       padding: 28px;
+      overflow-y: auto;
     }
 
     .password-icon {
@@ -702,6 +771,52 @@
       .clinic-header {
         flex-direction: column;
         text-align: center;
+      }
+
+      .modal-overlay {
+        padding: 12px;
+      }
+
+      .modal {
+        max-height: calc(100vh - 24px);
+        border-radius: 20px;
+      }
+
+      .modal-top {
+        padding: 20px 15px;
+      }
+
+      .modal-icon {
+        font-size: 45px;
+      }
+
+      .modal-top h2 {
+        font-size: 20px;
+      }
+
+      .modal-body {
+        padding: 15px;
+      }
+
+      .service-table th,
+      .service-table td {
+        padding: 12px 8px;
+        font-size: 13px;
+      }
+
+      .service-table th:nth-child(1),
+      .service-table td:nth-child(1) {
+        width: 30%;
+      }
+
+      .service-table th:nth-child(2),
+      .service-table td:nth-child(2) {
+        width: 22%;
+      }
+
+      .service-table th:nth-child(3),
+      .service-table td:nth-child(3) {
+        width: 48%;
       }
 
       .modal-buttons {
@@ -954,9 +1069,57 @@
 
       <div class="modal-body">
 
-        <p id="modalDescription">
-          تفاصيل الخدمة
-        </p>
+        <div class="service-table-wrapper">
+
+          <table class="service-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  اسم الخدمة
+                </th>
+
+                <th>
+                  السعر
+                </th>
+
+                <th>
+                  الملاحظات
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr>
+
+                <td id="modalServiceName">
+                  -
+                </td>
+
+                <td
+                  id="modalPrice"
+                  class="service-price"
+                >
+                  -
+                </td>
+
+                <td id="modalNotes">
+                  -
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
 
         <div class="modal-buttons">
 
@@ -1081,20 +1244,7 @@
        إعدادات الموقع
        ===================================================== */
 
-    /*
-      غيّر كلمة المرور من هنا فقط.
-
-      كلمة المرور الحالية:
-      1234
-    */
-
     const ADMIN_PASSWORD = "1234";
-
-
-    /*
-      مدة جلسة الإدارة بالدقائق.
-      بعد انتهاء المدة سيحتاج المستخدم لتسجيل الدخول مرة أخرى.
-    */
 
     const ADMIN_SESSION_MINUTES = 60;
 
@@ -1124,7 +1274,9 @@
 
             icon: "🦷",
 
-            description:
+            price: "15 د.ك",
+
+            notes:
               "خدمة تنظيف الأسنان وإزالة الجير والتصبغات للحصول على أسنان أكثر نظافة وصحة."
           },
 
@@ -1135,7 +1287,9 @@
 
             icon: "✨",
 
-            description:
+            price: "35 د.ك",
+
+            notes:
               "جلسة تبييض احترافية تساعد على تفتيح لون الأسنان والحصول على ابتسامة أكثر إشراقًا."
           },
 
@@ -1146,7 +1300,9 @@
 
             icon: "🩺",
 
-            description:
+            price: "10 د.ك",
+
+            notes:
               "فحص شامل للحالة الصحية مع تقييم الحالة وتقديم التوصيات المناسبة."
           }
 
@@ -1173,7 +1329,9 @@
 
             icon: "👨‍⚕️",
 
-            description:
+            price: "10 د.ك",
+
+            notes:
               "كشف طبي شامل وتقييم الحالة الصحية وتحديد الخطوات المناسبة للعلاج."
           },
 
@@ -1184,7 +1342,9 @@
 
             icon: "💬",
 
-            description:
+            price: "15 د.ك",
+
+            notes:
               "جلسة استشارة مع الطبيب لمناقشة الحالة والإجابة على جميع الاستفسارات."
           }
 
@@ -1205,7 +1365,13 @@
 
 
     /*
-      ضمان وجود مصفوفة services لكل عيادة
+      توافق مع البيانات القديمة.
+
+      إذا كانت الخدمة القديمة تحتوي على:
+      description
+
+      سيتم اعتبارها:
+      notes
     */
 
     clinics.forEach(clinic => {
@@ -1213,6 +1379,30 @@
       if (!Array.isArray(clinic.services)) {
         clinic.services = [];
       }
+
+      clinic.services.forEach(service => {
+
+        if (
+          service.notes === undefined ||
+          service.notes === null
+        ) {
+
+          service.notes =
+            service.description ||
+            "";
+
+        }
+
+        if (
+          service.price === undefined ||
+          service.price === null
+        ) {
+
+          service.price = "";
+
+        }
+
+      });
 
     });
 
@@ -1247,7 +1437,9 @@
     function showToast(message) {
 
       const toast =
-        document.getElementById("toast");
+        document.getElementById(
+          "toast"
+        );
 
       toast.textContent = message;
 
@@ -1284,12 +1476,10 @@
         return false;
       }
 
-
       const sessionDuration =
         ADMIN_SESSION_MINUTES *
         60 *
         1000;
-
 
       if (
         Date.now() - loginTime >
@@ -1303,7 +1493,6 @@
         return false;
 
       }
-
 
       return true;
 
@@ -1349,7 +1538,6 @@
 
       }
 
-
       document.getElementById(
         "adminPasswordInput"
       ).value = "";
@@ -1361,7 +1549,6 @@
       document.getElementById(
         "passwordModal"
       ).classList.add("active");
-
 
       setTimeout(() => {
 
@@ -1404,10 +1591,8 @@
           "adminPasswordInput"
         );
 
-
       const password =
         input.value;
-
 
       if (
         password ===
@@ -1463,7 +1648,6 @@
           "adminPasswordInput"
         );
 
-
       if (
         input.type === "password"
       ) {
@@ -1510,7 +1694,6 @@
 
       grid.innerHTML = "";
 
-
       if (clinics.length === 0) {
 
         grid.innerHTML = `
@@ -1523,7 +1706,6 @@
 
       }
 
-
       clinics.forEach(clinic => {
 
         const card =
@@ -1532,10 +1714,8 @@
         card.className =
           "clinic-card";
 
-
         card.onclick = () =>
           openClinic(clinic.id);
-
 
         card.innerHTML = `
 
@@ -1552,7 +1732,6 @@
           </span>
 
         `;
-
 
         grid.appendChild(card);
 
@@ -1575,7 +1754,6 @@
           c => String(c.id) === String(clinicId)
         );
 
-
       if (!clinic) {
 
         showHome();
@@ -1584,24 +1762,19 @@
 
       }
 
-
       currentClinic = clinic;
-
 
       document.getElementById(
         "homePage"
       ).style.display = "none";
 
-
       document.getElementById(
         "adminPage"
       ).classList.remove("active");
 
-
       document.getElementById(
         "servicesPage"
       ).style.display = "block";
-
 
       document.getElementById(
         "clinicHeader"
@@ -1631,15 +1804,12 @@
 
       `;
 
-
       const grid =
         document.getElementById(
           "servicesGrid"
         );
 
-
       grid.innerHTML = "";
-
 
       if (
         clinic.services.length === 0
@@ -1662,13 +1832,11 @@
             card.className =
               "service-card";
 
-
             card.onclick = () =>
               openService(
                 clinic.id,
                 service.id
               );
-
 
             card.innerHTML = `
 
@@ -1682,19 +1850,12 @@
 
             `;
 
-
             grid.appendChild(card);
 
           }
         );
 
       }
-
-
-      /*
-        حفظ العيادة الحالية في الرابط
-        حتى لا تضيع عند عمل Refresh.
-      */
 
       if (updateURL) {
 
@@ -1733,42 +1894,65 @@
           c => String(c.id) === String(clinicId)
         );
 
-
       if (!clinic) return;
-
 
       const service =
         clinic.services.find(
           s => String(s.id) === String(serviceId)
         );
 
-
       if (!service) return;
-
 
       currentClinic = clinic;
 
       currentService = service;
-
 
       document.getElementById(
         "modalIcon"
       ).textContent =
         service.icon || "🩺";
 
-
       document.getElementById(
         "modalTitle"
       ).textContent =
         service.name;
 
+      document.getElementById(
+        "modalServiceName"
+      ).textContent =
+        service.name || "-";
+
+      const priceElement =
+        document.getElementById(
+          "modalPrice"
+        );
+
+      if (service.price) {
+
+        priceElement.textContent =
+          service.price;
+
+        priceElement.classList.remove(
+          "no-price"
+        );
+
+      } else {
+
+        priceElement.textContent =
+          "غير محدد";
+
+        priceElement.classList.add(
+          "no-price"
+        );
+
+      }
 
       document.getElementById(
-        "modalDescription"
+        "modalNotes"
       ).textContent =
+        service.notes ||
         service.description ||
-        "لا توجد تفاصيل متاحة.";
-
+        "لا توجد ملاحظات.";
 
       document.getElementById(
         "serviceModal"
@@ -1821,27 +2005,23 @@
 
       }
 
-
       const service =
         currentService;
 
       const clinic =
         currentClinic;
 
-
       const canvas =
         document.createElement(
           "canvas"
         );
 
-
       const ctx =
         canvas.getContext("2d");
 
-
       canvas.width = 1080;
 
-      canvas.height = 1350;
+      canvas.height = 1450;
 
 
       /* Background */
@@ -1851,9 +2031,8 @@
           0,
           0,
           1080,
-          1350
+          1450
         );
-
 
       gradient.addColorStop(
         0,
@@ -1865,16 +2044,14 @@
         "#14b8a6"
       );
 
-
       ctx.fillStyle =
         gradient;
-
 
       ctx.fillRect(
         0,
         0,
         1080,
-        1350
+        1450
       );
 
 
@@ -1883,16 +2060,14 @@
       ctx.fillStyle =
         "#ffffff";
 
-
       roundRect(
         ctx,
         60,
-        70,
+        60,
         960,
-        1210,
+        1330,
         40
       );
-
 
       ctx.fill();
 
@@ -1902,15 +2077,13 @@
       ctx.textAlign =
         "center";
 
-
       ctx.font =
         "110px Arial";
-
 
       ctx.fillText(
         service.icon || "🩺",
         540,
-        260
+        240
       );
 
 
@@ -1919,15 +2092,13 @@
       ctx.fillStyle =
         "#16302f";
 
-
       ctx.font =
         "bold 52px Arial";
-
 
       ctx.fillText(
         service.name,
         540,
-        380
+        350
       );
 
 
@@ -1936,50 +2107,118 @@
       ctx.fillStyle =
         "#14b8a6";
 
-
       ctx.fillRect(
         390,
-        420,
+        390,
         300,
         6
       );
 
 
-      /* Description */
+      /* Service Label */
+
+      ctx.textAlign =
+        "right";
+
+      ctx.fillStyle =
+        "#0f766e";
+
+      ctx.font =
+        "bold 32px Arial";
+
+      ctx.fillText(
+        "اسم الخدمة",
+        930,
+        480
+      );
+
+      ctx.fillStyle =
+        "#263b39";
+
+      ctx.font =
+        "bold 30px Arial";
+
+      ctx.fillText(
+        service.name || "-",
+        930,
+        530
+      );
+
+
+      /* Price */
+
+      ctx.fillStyle =
+        "#0f766e";
+
+      ctx.font =
+        "bold 32px Arial";
+
+      ctx.fillText(
+        "السعر",
+        930,
+        620
+      );
+
+      ctx.fillStyle =
+        "#263b39";
+
+      ctx.font =
+        "bold 30px Arial";
+
+      ctx.fillText(
+        service.price || "غير محدد",
+        930,
+        670
+      );
+
+
+      /* Notes */
+
+      ctx.fillStyle =
+        "#0f766e";
+
+      ctx.font =
+        "bold 32px Arial";
+
+      ctx.fillText(
+        "الملاحظات",
+        930,
+        760
+      );
 
       ctx.fillStyle =
         "#475b59";
 
-
       ctx.font =
-        "32px Arial";
+        "bold 28px Arial";
 
-
-      wrapText(
+      wrapTextRTL(
         ctx,
-        service.description ||
-          "لا توجد تفاصيل متاحة.",
-        540,
-        520,
+        service.notes ||
+          service.description ||
+          "لا توجد ملاحظات.",
+        930,
+        815,
         800,
-        55
+        48
       );
 
 
       /* Clinic */
 
+      ctx.textAlign =
+        "center";
+
       ctx.fillStyle =
         "#0f766e";
-
 
       ctx.font =
         "bold 30px Arial";
 
-
       ctx.fillText(
         clinic.name,
         540,
-        1110
+        1240
       );
 
 
@@ -1988,15 +2227,13 @@
       ctx.fillStyle =
         "#94a3a1";
 
-
       ctx.font =
         "24px Arial";
-
 
       ctx.fillText(
         "دليل العيادات والخدمات",
         540,
-        1170
+        1300
       );
 
 
@@ -2013,7 +2250,6 @@
 
           }
 
-
           const safeFileName =
             (
               service.name ||
@@ -2026,7 +2262,6 @@
               .trim() ||
             "service";
 
-
           const file =
             new File(
               [blob],
@@ -2035,11 +2270,6 @@
                 type: "image/png"
               }
             );
-
-
-          /*
-            محاولة المشاركة المباشرة
-          */
 
           try {
 
@@ -2076,12 +2306,6 @@
 
           }
 
-
-          /*
-            البديل:
-            تحميل الصورة
-          */
-
           try {
 
             const imageURL =
@@ -2089,31 +2313,24 @@
                 blob
               );
 
-
             const downloadLink =
               document.createElement(
                 "a"
               );
 
-
             downloadLink.href =
               imageURL;
 
-
             downloadLink.download =
               `${safeFileName}.png`;
-
 
             document.body.appendChild(
               downloadLink
             );
 
-
             downloadLink.click();
 
-
             downloadLink.remove();
-
 
             setTimeout(
               () => {
@@ -2125,7 +2342,6 @@
               },
               1000
             );
-
 
             showToast(
               "تم إنشاء صورة الخدمة وحفظها على جهازك."
@@ -2163,18 +2379,15 @@
 
       ctx.beginPath();
 
-
       ctx.moveTo(
         x + radius,
         y
       );
 
-
       ctx.lineTo(
         x + width - radius,
         y
       );
-
 
       ctx.quadraticCurveTo(
         x + width,
@@ -2183,12 +2396,10 @@
         y + radius
       );
 
-
       ctx.lineTo(
         x + width,
         y + height - radius
       );
-
 
       ctx.quadraticCurveTo(
         x + width,
@@ -2197,12 +2408,10 @@
         y + height
       );
 
-
       ctx.lineTo(
         x + radius,
         y + height
       );
-
 
       ctx.quadraticCurveTo(
         x,
@@ -2211,12 +2420,10 @@
         y + height - radius
       );
 
-
       ctx.lineTo(
         x,
         y + radius
       );
-
 
       ctx.quadraticCurveTo(
         x,
@@ -2224,14 +2431,13 @@
         x + radius,
         y
       );
-
 
       ctx.closePath();
 
     }
 
 
-    function wrapText(
+    function wrapTextRTL(
       ctx,
       text,
       x,
@@ -2244,11 +2450,9 @@
         String(text || "")
           .split(/\s+/);
 
-
       let line = "";
 
       const lines = [];
-
 
       for (
         let i = 0;
@@ -2261,12 +2465,10 @@
           words[i] +
           " ";
 
-
         const metrics =
           ctx.measureText(
             testLine
           );
-
 
         if (
           metrics.width >
@@ -2288,13 +2490,11 @@
 
       }
 
-
       if (line) {
 
         lines.push(line);
 
       }
-
 
       lines.forEach(
         (line, index) => {
@@ -2324,19 +2524,16 @@
           "clinicName"
         ).value.trim();
 
-
       const icon =
         document.getElementById(
           "clinicIcon"
         ).value.trim() ||
         "🏥";
 
-
       const description =
         document.getElementById(
           "clinicDescription"
         ).value.trim();
-
 
       if (!name) {
 
@@ -2347,7 +2544,6 @@
         return;
 
       }
-
 
       clinics.push({
 
@@ -2363,28 +2559,23 @@
 
       });
 
-
       saveData();
 
       renderAdmin();
 
       renderClinics();
 
-
       document.getElementById(
         "clinicName"
       ).value = "";
-
 
       document.getElementById(
         "clinicDescription"
       ).value = "";
 
-
       document.getElementById(
         "clinicIcon"
       ).value = "🏥";
-
 
       showToast(
         "تمت إضافة العيادة بنجاح."
@@ -2404,9 +2595,7 @@
           "adminClinics"
         );
 
-
       container.innerHTML = "";
-
 
       if (clinics.length === 0) {
 
@@ -2420,7 +2609,6 @@
 
       }
 
-
       clinics.forEach(
         clinic => {
 
@@ -2429,10 +2617,8 @@
               "div"
             );
 
-
           clinicDiv.className =
             "admin-clinic";
-
 
           clinicDiv.innerHTML = `
 
@@ -2455,7 +2641,6 @@
                 </div>
 
               </div>
-
 
               <div class="admin-clinic-actions">
 
@@ -2516,6 +2701,21 @@
               <div class="form-group">
 
                 <label>
+                  السعر
+                </label>
+
+                <input
+                  type="text"
+                  id="service-price-${clinic.id}"
+                  placeholder="مثال: 25 د.ك"
+                />
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
                   الأيقونة
                 </label>
 
@@ -2532,12 +2732,12 @@
               <div class="form-group full">
 
                 <label>
-                  تفاصيل الخدمة
+                  الملاحظات
                 </label>
 
                 <textarea
-                  id="service-description-${clinic.id}"
-                  placeholder="اكتب تفاصيل الخدمة..."
+                  id="service-notes-${clinic.id}"
+                  placeholder="اكتب ملاحظات وتفاصيل الخدمة..."
                 ></textarea>
 
               </div>
@@ -2554,17 +2754,14 @@
 
           `;
 
-
           container.appendChild(
             clinicDiv
           );
-
 
           const servicesContainer =
             document.getElementById(
               `services-${clinic.id}`
             );
-
 
           if (
             clinic.services.length === 0
@@ -2590,10 +2787,8 @@
                     "div"
                   );
 
-
                 div.className =
                   "admin-service";
-
 
                 div.innerHTML = `
 
@@ -2616,6 +2811,15 @@
                       <strong>
                         ${escapeHTML(service.name)}
                       </strong>
+
+                      <div style="
+                        color:#0f766e;
+                        font-size:13px;
+                        font-weight:bold;
+                        margin-top:3px;
+                      ">
+                        ${escapeHTML(service.price || "السعر غير محدد")}
+                      </div>
 
                     </div>
 
@@ -2718,13 +2922,28 @@
                       <div class="form-group">
 
                         <label>
+                          السعر
+                        </label>
+
+                        <input
+                          type="text"
+                          id="edit-price-${clinic.id}-${service.id}"
+                          value="${escapeHTML(service.price || "")}"
+                        />
+
+                      </div>
+
+
+                      <div class="form-group">
+
+                        <label>
                           الأيقونة
                         </label>
 
                         <input
                           type="text"
                           id="edit-icon-${clinic.id}-${service.id}"
-                          value="${escapeHTML(service.icon)}"
+                          value="${escapeHTML(service.icon || "🩺")}"
                         />
 
                       </div>
@@ -2733,12 +2952,12 @@
                       <div class="form-group full">
 
                         <label>
-                          تفاصيل الخدمة
+                          الملاحظات
                         </label>
 
                         <textarea
-                          id="edit-description-${clinic.id}-${service.id}"
-                        >${escapeHTML(service.description || "")}</textarea>
+                          id="edit-notes-${clinic.id}-${service.id}"
+                        >${escapeHTML(service.notes || service.description || "")}</textarea>
 
                       </div>
 
@@ -2777,7 +2996,6 @@
 
                 `;
 
-
                 servicesContainer.appendChild(
                   div
                 );
@@ -2804,15 +3022,17 @@
           c => String(c.id) === String(clinicId)
         );
 
-
       if (!clinic) return;
-
 
       const name =
         document.getElementById(
           `service-name-${clinicId}`
         ).value.trim();
 
+      const price =
+        document.getElementById(
+          `service-price-${clinicId}`
+        ).value.trim();
 
       const icon =
         document.getElementById(
@@ -2820,12 +3040,10 @@
         ).value.trim() ||
         "🩺";
 
-
-      const description =
+      const notes =
         document.getElementById(
-          `service-description-${clinicId}`
+          `service-notes-${clinicId}`
         ).value.trim();
-
 
       if (!name) {
 
@@ -2837,7 +3055,6 @@
 
       }
 
-
       clinic.services.push({
 
         id: Date.now(),
@@ -2846,17 +3063,17 @@
 
         icon,
 
-        description
+        price,
+
+        notes
 
       });
-
 
       saveData();
 
       renderAdmin();
 
       renderClinics();
-
 
       showToast(
         "تمت إضافة الخدمة بنجاح."
@@ -2879,9 +3096,7 @@
           `edit-${clinicId}-${serviceId}`
         );
 
-
       if (!form) return;
-
 
       form.classList.toggle(
         "active"
@@ -2904,24 +3119,24 @@
           c => String(c.id) === String(clinicId)
         );
 
-
       if (!clinic) return;
-
 
       const service =
         clinic.services.find(
           s => String(s.id) === String(serviceId)
         );
 
-
       if (!service) return;
-
 
       const name =
         document.getElementById(
           `edit-name-${clinicId}-${serviceId}`
         ).value.trim();
 
+      const price =
+        document.getElementById(
+          `edit-price-${clinicId}-${serviceId}`
+        ).value.trim();
 
       const icon =
         document.getElementById(
@@ -2929,12 +3144,10 @@
         ).value.trim() ||
         "🩺";
 
-
-      const description =
+      const notes =
         document.getElementById(
-          `edit-description-${clinicId}-${serviceId}`
+          `edit-notes-${clinicId}-${serviceId}`
         ).value.trim();
-
 
       if (!name) {
 
@@ -2946,28 +3159,31 @@
 
       }
 
-
       service.name =
         name;
 
       service.icon =
         icon;
 
-      service.description =
-        description;
+      service.price =
+        price;
 
+      service.notes =
+        notes;
+
+      /*
+        تحديث description أيضًا حتى تظل
+        البيانات القديمة متوافقة.
+      */
+
+      service.description =
+        notes;
 
       saveData();
 
       renderAdmin();
 
       renderClinics();
-
-
-      /*
-        إذا كان المستخدم داخل نفس العيادة،
-        نعيد عرضها بالتحديث الجديد.
-      */
 
       if (currentClinic) {
 
@@ -2977,7 +3193,6 @@
               String(c.id) ===
               String(currentClinic.id)
           );
-
 
         if (updatedClinic) {
 
@@ -2989,7 +3204,6 @@
         }
 
       }
-
 
       showToast(
         "تم حفظ تعديل الخدمة."
@@ -3012,9 +3226,7 @@
           c => String(c.id) === String(clinicId)
         );
 
-
       if (!clinic) return;
-
 
       const index =
         clinic.services.findIndex(
@@ -3022,7 +3234,6 @@
             String(s.id) ===
             String(serviceId)
         );
-
 
       if (
         index <= 0
@@ -3032,7 +3243,6 @@
 
       }
 
-
       [
         clinic.services[index - 1],
         clinic.services[index]
@@ -3041,13 +3251,11 @@
         clinic.services[index - 1]
       ];
 
-
       saveData();
 
       renderAdmin();
 
       renderClinics();
-
 
       if (
         currentClinic &&
@@ -3061,7 +3269,6 @@
         );
 
       }
-
 
       showToast(
         "تم تحريك الخدمة لأعلى."
@@ -3084,9 +3291,7 @@
           c => String(c.id) === String(clinicId)
         );
 
-
       if (!clinic) return;
-
 
       const index =
         clinic.services.findIndex(
@@ -3094,7 +3299,6 @@
             String(s.id) ===
             String(serviceId)
         );
-
 
       if (
         index === -1 ||
@@ -3106,7 +3310,6 @@
 
       }
 
-
       [
         clinic.services[index],
         clinic.services[index + 1]
@@ -3115,13 +3318,11 @@
         clinic.services[index]
       ];
 
-
       saveData();
 
       renderAdmin();
 
       renderClinics();
-
 
       if (
         currentClinic &&
@@ -3135,7 +3336,6 @@
         );
 
       }
-
 
       showToast(
         "تم تحريك الخدمة لأسفل."
@@ -3157,18 +3357,14 @@
           c => String(c.id) === String(clinicId)
         );
 
-
       if (!clinic) return;
-
 
       const confirmDelete =
         confirm(
           `هل أنت متأكد من حذف "${clinic.name}"؟`
         );
 
-
       if (!confirmDelete) return;
-
 
       clinics =
         clinics.filter(
@@ -3177,13 +3373,11 @@
             String(clinicId)
         );
 
-
       saveData();
 
       renderAdmin();
 
       renderClinics();
-
 
       showToast(
         "تم حذف العيادة."
@@ -3206,27 +3400,21 @@
           c => String(c.id) === String(clinicId)
         );
 
-
       if (!clinic) return;
-
 
       const service =
         clinic.services.find(
           s => String(s.id) === String(serviceId)
         );
 
-
       if (!service) return;
-
 
       const confirmDelete =
         confirm(
           `هل تريد حذف خدمة "${service.name}"؟`
         );
 
-
       if (!confirmDelete) return;
-
 
       clinic.services =
         clinic.services.filter(
@@ -3235,13 +3423,11 @@
             String(serviceId)
         );
 
-
       saveData();
 
       renderAdmin();
 
       renderClinics();
-
 
       showToast(
         "تم حذف الخدمة."
@@ -3258,48 +3444,36 @@
 
       closeModal();
 
-
       document.getElementById(
         "homePage"
       ).style.display = "block";
-
 
       document.getElementById(
         "servicesPage"
       ).style.display = "none";
 
-
       document.getElementById(
         "adminPage"
       ).classList.remove("active");
 
-
       currentClinic = null;
 
       currentService = null;
-
-
-      /*
-        إزالة رقم العيادة من الرابط
-      */
 
       const url =
         new URL(
           window.location.href
         );
 
-
       url.searchParams.delete(
         "clinic"
       );
-
 
       history.pushState(
         {},
         "",
         url
       );
-
 
       renderClinics();
 
@@ -3317,10 +3491,8 @@
           window.location.search
         );
 
-
       const clinicId =
         params.get("clinic");
-
 
       if (clinicId) {
 
@@ -3330,7 +3502,6 @@
               String(c.id) ===
               String(clinicId)
           );
-
 
         if (clinic) {
 
@@ -3345,7 +3516,6 @@
 
       }
 
-
       showHomeWithoutHistory();
 
     }
@@ -3355,26 +3525,21 @@
 
       closeModal();
 
-
       document.getElementById(
         "homePage"
       ).style.display = "block";
-
 
       document.getElementById(
         "servicesPage"
       ).style.display = "none";
 
-
       document.getElementById(
         "adminPage"
       ).classList.remove("active");
 
-
       currentClinic = null;
 
       currentService = null;
-
 
       renderClinics();
 
@@ -3408,7 +3573,6 @@
 
             };
 
-
             return chars[match];
 
           }
@@ -3428,4 +3592,4 @@
   </script>
 
 </body>
-</html>
+  </html>
