@@ -338,7 +338,77 @@
       background: var(--primary);
       color: white;
     }
+    
+/* ================= SERVICE OPTIONS TABLE ================= */
 
+.service-options {
+width: 100%;
+border: 1px solid var(--border);
+border-radius: 14px;
+overflow: hidden;
+background: white;
+margin-top: 5px;
+}
+
+.service-options-header,
+.service-option-row {
+display: grid;
+grid-template-columns: 1fr 130px;
+align-items: center;
+}
+
+.service-options-header {
+background: var(--primary);
+color: white;
+font-weight: bold;
+}
+
+.service-options-header > div,
+.service-option-row > div {
+padding: 13px 12px;
+}
+
+.service-options-header > div:last-child,
+.service-option-row > div:last-child {
+text-align: center;
+border-right: 1px solid var(--border);
+}
+
+.service-option-row {
+border-top: 1px solid var(--border);
+}
+
+.service-option-row:nth-child(even) {
+background: #f8faf9;
+}
+
+.service-option-row > div:first-child {
+color: var(--text);
+line-height: 1.7;
+}
+
+.service-option-row > div:last-child {
+color: var(--primary);
+font-weight: bold;
+white-space: nowrap;
+}
+
+/* ================= MOBILE SERVICE TABLE ================= */
+
+@media (max-width: 650px) {
+
+.service-options-header,
+.service-option-row {
+grid-template-columns: 1fr 100px;
+}
+
+.service-options-header > div,
+.service-option-row > div {
+padding: 11px 8px;
+font-size: 13px;
+}
+
+}
     /* ================= ADMIN ================= */
 
     .admin-panel {
@@ -1826,95 +1896,147 @@
      ===================================================== */
 
   function openService(
-    clinicId,
-    serviceId
-  ) {
+clinicId,
+serviceId
+) {
 
-    const clinic =
-      clinics.find(
-        c =>
-          String(c.id) ===
-          String(clinicId)
-      );
+const clinic =
+clinics.find(
+c =>
+String(c.id) ===
+String(clinicId)
+);
+
+if (!clinic) return;
+
+const service =
+clinic.services.find(
+s =>
+String(s.id) ===
+String(serviceId)
+);
+
+if (!service) return;
+
+currentClinic =
+clinic;
+
+currentService =
+service;
+
+/*
+أيقونة الخدمة
+*/
+
+document.getElementById(
+"modalIcon"
+).textContent =
+service.icon ||
+"🩺";
+
+/*
+اسم الخدمة
+*/
+
+document.getElementById(
+"modalTitle"
+).textContent =
+service.name;
+
+/*
+عرض أنواع الخدمة والأسعار
+*/
+
+const modalDescription =
+document.getElementById(
+"modalDescription"
+);
+
+if (
+Array.isArray(service.options) &&
+service.options.length > 0
+) {
+
+let tableHTML = `
+
+  <div class="service-options">
+
+    <div class="service-options-header">
+
+      <div>
+        أنواع الخدمة
+      </div>
+
+      <div>
+        السعر
+      </div>
+
+    </div>
+
+`;
 
 
-    if (!clinic) return;
+service.options.forEach(
+  (option, index) => {
+
+    const type =
+      option.type ||
+      `نوع الخدمة ${index + 1}`;
 
 
-    const service =
-      clinic.services.find(
-        s =>
-          String(s.id) ===
-          String(serviceId)
-      );
+    const price =
+      option.price ||
+      "-";
 
 
-    if (!service) return;
+    tableHTML += `
 
+      <div class="service-option-row">
 
-    currentClinic =
-      clinic;
+        <div>
+          ${escapeHTML(type)}
+        </div>
 
+        <div>
+          ${escapeHTML(price)}
+          ${price !== "-" ? " دك" : ""}
+        </div>
 
-    currentService =
-      service;
+      </div>
 
-
-    document.getElementById(
-      "modalIcon"
-    ).textContent =
-      service.icon ||
-      "🩺";
-
-
-    document.getElementById(
-      "modalTitle"
-    ).textContent =
-      service.name;
-
-
-    document.getElementById(
-      "modalDescription"
-    ).textContent =
-      service.description ||
-      "لا توجد تفاصيل متاحة.";
-
-
-    document.getElementById(
-      "serviceModal"
-    ).classList.add(
-      "active"
-    );
+    `;
 
   }
+);
 
 
-  function closeModal() {
+tableHTML += `
 
-    document.getElementById(
-      "serviceModal"
-    ).classList.remove(
-      "active"
-    );
+  </div>
 
-  }
+`;
 
 
-  function closeModalOutside(event) {
+modalDescription.innerHTML =
+  tableHTML;
 
-    if (
-      event.target ===
-      document.getElementById(
-        "serviceModal"
-      )
-    ) {
 
-      closeModal();
+} else {
 
-    }
+modalDescription.textContent =
+  service.description ||
+  "لا توجد تفاصيل متاحة.";
 
-  }
 
+}
+
+document.getElementById(
+"serviceModal"
+).classList.add(
+"active"
+);
+
+}
 
   /* =====================================================
      مشاركة الخدمة كصورة
