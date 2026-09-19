@@ -2056,7 +2056,24 @@ document.getElementById(
 );
 
 }
-  
+
+
+  function closeModalOutside(event) {
+
+  if (
+    event.target ===
+    document.getElementById(
+      "serviceModal"
+    )
+  ) {
+
+    closeModal();
+
+  }
+
+}
+
+
   /* =====================================================
      مشاركة الخدمة كصورة
      ===================================================== */
