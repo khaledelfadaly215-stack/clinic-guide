@@ -929,58 +929,77 @@
 
   <!-- ================= SERVICE MODAL ================= -->
 
-  <div
-    id="serviceModal"
-    class="modal-overlay"
-    onclick="closeModalOutside(event)"
-  >
+ <!-- ================= SERVICE MODAL ================= -->
 
-    <div class="modal">
+<div
+  id="serviceModal"
+  class="modal-overlay"
+  onclick="closeModalOutside(event)"
+>
 
-      <div class="modal-top">
+  <div class="modal">
 
-        <div
-          id="modalIcon"
-          class="modal-icon"
-        >
-          🦷
-        </div>
+    <div class="modal-top">
 
-        <h2 id="modalTitle">
-          اسم الخدمة
-        </h2>
+      <div
+        id="modalIcon"
+        class="modal-icon"
+      >
+        🦷
+      </div>
+
+      <h2 id="modalTitle">
+        اسم الخدمة
+      </h2>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <!-- وصف الخدمة -->
+
+      <p
+        id="modalDescription"
+        style="margin-bottom:20px;"
+      >
+        تفاصيل الخدمة
+      </p>
+
+
+      <!-- جدول أنواع الخدمة والأسعار -->
+
+      <div id="serviceTypesContainer">
+
+        <!-- سيتم إنشاء الجدول هنا تلقائيًا -->
 
       </div>
 
-      <div class="modal-body">
 
-        <p id="modalDescription">
-          تفاصيل الخدمة
-        </p>
+      <div class="modal-buttons">
 
-        <div class="modal-buttons">
+        <button
+          class="share-btn"
+          onclick="shareService()"
+        >
+          📤 مشاركة كصورة
+        </button>
 
-          <button
-            class="share-btn"
-            onclick="shareService()"
-          >
-            📤 مشاركة كصورة
-          </button>
-
-          <button
-            class="close-btn"
-            onclick="closeModal()"
-          >
-            إغلاق
-          </button>
-
-        </div>
+        <button
+          class="close-btn"
+          onclick="closeModal()"
+        >
+          إغلاق
+        </button>
 
       </div>
 
     </div>
 
   </div>
+
+</div>
+
 
 
   <!-- ================= PASSWORD MODAL ================= -->
@@ -1825,71 +1844,251 @@
      فتح الخدمة
      ===================================================== */
 
-  function openService(
-    clinicId,
-    serviceId
-  ) {
+ function openService(
+  clinicId,
+  serviceId
+) {
 
-    const clinic =
-      clinics.find(
-        c =>
-          String(c.id) ===
-          String(clinicId)
-      );
-
-
-    if (!clinic) return;
-
-
-    const service =
-      clinic.services.find(
-        s =>
-          String(s.id) ===
-          String(serviceId)
-      );
-
-
-    if (!service) return;
-
-
-    currentClinic =
-      clinic;
-
-
-    currentService =
-      service;
-
-
-    document.getElementById(
-      "modalIcon"
-    ).textContent =
-      service.icon ||
-      "🩺";
-
-
-    document.getElementById(
-      "modalTitle"
-    ).textContent =
-      service.name;
-
-
-    document.getElementById(
-      "modalDescription"
-    ).textContent =
-      service.description ||
-      "لا توجد تفاصيل متاحة.";
-
-
-    document.getElementById(
-      "serviceModal"
-    ).classList.add(
-      "active"
+  const clinic =
+    clinics.find(
+      c =>
+        String(c.id) ===
+        String(clinicId)
     );
+
+
+  if (!clinic) return;
+
+
+  const service =
+    clinic.services.find(
+      s =>
+        String(s.id) ===
+        String(serviceId)
+    );
+
+
+  if (!service) return;
+
+
+  currentClinic =
+    clinic;
+
+
+  currentService =
+    service;
+
+
+  /* =========================
+     بيانات رأس النافذة
+     ========================= */
+
+  document.getElementById(
+    "modalIcon"
+  ).textContent =
+    service.icon ||
+    "🩺";
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    service.name;
+
+
+  document.getElementById(
+    "modalDescription"
+  ).textContent =
+    service.description ||
+    "";
+
+
+  /* =========================
+     أنواع الخدمة والأسعار
+     ========================= */
+
+  const typesContainer =
+    document.getElementById(
+      "serviceTypesContainer"
+    );
+
+
+  typesContainer.innerHTML = "";
+
+
+  const types =
+    Array.isArray(service.types)
+      ? service.types
+      : [];
+
+
+  if (types.length > 0) {
+
+    const tableWrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    tableWrapper.style.cssText = `
+      width:100%;
+      overflow-x:auto;
+      margin-top:10px;
+      border:1px solid #e2e8e7;
+      border-radius:14px;
+      overflow:hidden;
+    `;
+
+
+    const table =
+      document.createElement(
+        "table"
+      );
+
+
+    table.style.cssText = `
+      width:100%;
+      border-collapse:collapse;
+      background:#ffffff;
+      font-size:14px;
+    `;
+
+
+    table.innerHTML = `
+
+      <thead>
+
+        <tr style="
+          background:#f0fdfa;
+          color:#115e59;
+        ">
+
+          <th style="
+            padding:13px 10px;
+            text-align:right;
+            border-bottom:1px solid #e2e8e7;
+          ">
+            نوع الخدمة
+          </th>
+
+          <th style="
+            padding:13px 10px;
+            text-align:center;
+            border-bottom:1px solid #e2e8e7;
+            white-space:nowrap;
+            width:120px;
+          ">
+            السعر
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="serviceTypesTableBody">
+
+      </tbody>
+
+    `;
+
+
+    const tbody =
+      table.querySelector(
+        "#serviceTypesTableBody"
+      );
+
+
+    types.forEach(
+      (type, index) => {
+
+        const row =
+          document.createElement(
+            "tr"
+          );
+
+
+        row.style.borderBottom =
+          index === types.length - 1
+            ? "none"
+            : "1px solid #eef2f2";
+
+
+        row.innerHTML = `
+
+          <td style="
+            padding:14px 10px;
+            text-align:right;
+            color:#16302f;
+            line-height:1.7;
+          ">
+            ${escapeHTML(type.name)}
+          </td>
+
+          <td style="
+            padding:14px 10px;
+            text-align:center;
+            color:#0f766e;
+            font-weight:bold;
+            white-space:nowrap;
+          ">
+            ${escapeHTML(type.price)}
+            دك
+          </td>
+
+        `;
+
+
+        tbody.appendChild(
+          row
+        );
+
+      }
+    );
+
+
+    tableWrapper.appendChild(
+      table
+    );
+
+
+    typesContainer.appendChild(
+      tableWrapper
+    );
+
+  } else {
+
+    typesContainer.innerHTML = `
+
+      <div style="
+        background:#f8faf9;
+        border:1px solid #e2e8e7;
+        border-radius:12px;
+        padding:15px;
+        text-align:center;
+        color:#6b7c7b;
+        font-size:14px;
+        margin-top:10px;
+      ">
+        لا توجد أنواع أو أسعار مضافة لهذه الخدمة حاليًا.
+      </div>
+
+    `;
 
   }
 
 
-  function closeModal() {
+  /* =========================
+     فتح النافذة
+     ========================= */
+
+  document.getElementById(
+    "serviceModal"
+  ).classList.add(
+    "active"
+  );
+
+}
+
 
     document.getElementById(
       "serviceModal"
