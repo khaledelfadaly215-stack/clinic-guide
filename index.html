@@ -1239,84 +1239,94 @@ font-size: 13px;
      تحميل البيانات من Google Sheets
      ===================================================== */
 
-  async function loadData() {
+ async function loadData() {
 
-    try {
+try {
 
-      showLoading();
+showLoading();
 
+console.log("بدء تحميل البيانات...");
 
-      const result =
-        await apiRequest("getData");
+const result =
+  await apiRequest("getData");
 
+console.log(
+  "نتيجة API:",
+  result
+);
 
-      clinics =
-        Array.isArray(result.data)
-          ? result.data
-          : [];
+clinics =
+  Array.isArray(result.data)
+    ? result.data
+    : [];
 
+clinics.forEach(clinic => {
 
-      clinics.forEach(clinic => {
+  if (!Array.isArray(clinic.services)) {
 
-        if (!Array.isArray(clinic.services)) {
-
-          clinic.services = [];
-
-        }
-
-      });
-
-
-      renderClinics();
-
-      loadPageFromURL();
-
-
-    } catch (error) {
-
-      console.error(error);
-
-
-      clinics = [];
-
-
-      const grid =
-        document.getElementById(
-          "clinicsGrid"
-        );
-
-
-      grid.innerHTML = `
-
-        <div class="empty">
-
-          <div style="
-            font-size:40px;
-            margin-bottom:15px;
-          ">
-            ⚠️
-          </div>
-
-          <strong>
-            تعذر تحميل البيانات
-          </strong>
-
-          <p style="
-            margin-top:10px;
-            line-height:1.8;
-          ">
-            تأكد من اتصال الإنترنت ثم
-            أعد تحميل الصفحة.
-          </p>
-
-        </div>
-
-      `;
-
-    }
+    clinic.services = [];
 
   }
 
+});
+
+console.log(
+  "العيادات:",
+  clinics
+);
+
+renderClinics();
+
+loadPageFromURL();
+
+
+} catch (error) {
+
+console.error(
+  "خطأ تحميل البيانات:",
+  error
+);
+
+clinics = [];
+
+const grid =
+  document.getElementById(
+    "clinicsGrid"
+  );
+
+grid.innerHTML = `
+
+  <div class="empty">
+
+    <div style="
+      font-size:40px;
+      margin-bottom:15px;
+    ">
+      ⚠️
+    </div>
+
+    <strong>
+      تعذر تحميل البيانات
+    </strong>
+
+    <p style="
+      margin-top:10px;
+      line-height:1.8;
+    ">
+      ${escapeHTML(
+        error.message ||
+        "حدث خطأ غير معروف."
+      )}
+    </p>
+
+  </div>
+
+`;
+
+
+}
+
+}
 
   /* =====================================================
      شاشة التحميل
