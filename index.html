@@ -2689,71 +2689,100 @@ document.getElementById(
      إضافة خدمة
      ===================================================== */
 
-  async function addService(
-    clinicId
-  ) {
+  async function addService(clinicId) {
 
-    const name =
-      document.getElementById(
-        `service-name-${clinicId}`
-      ).value.trim();
+  const name =
+    document.getElementById(
+      `service-name-${clinicId}`
+    ).value.trim();
 
+  const icon =
+    document.getElementById(
+      `service-icon-${clinicId}`
+    ).value.trim() || "🩺";
 
-    const icon =
-      document.getElementById(
-        `service-icon-${clinicId}`
-      ).value.trim() ||
-      "🩺";
+  const description =
+    document.getElementById(
+      `service-description-${clinicId}`
+    ).value.trim();
 
+  const serviceType =
+    document.getElementById(
+      `service-type-${clinicId}`
+    ).value.trim();
 
-    const description =
-      document.getElementById(
-        `service-description-${clinicId}`
-      ).value.trim();
-
-
-    if (!name) {
-
-      alert(
-        "من فضلك اكتب اسم الخدمة."
-      );
-
-      return;
-
-    }
+  const price =
+    document.getElementById(
+      `service-price-${clinicId}`
+    ).value.trim();
 
 
-    try {
+  if (!name) {
 
-      await apiRequest(
-        "addService",
-        {
-          clinicId,
-          name,
-          icon,
-          description
-        }
-      );
+    alert(
+      "من فضلك اكتب اسم الخدمة."
+    );
 
-
-      await refreshData();
-
-
-      showToast(
-        "تمت إضافة الخدمة بنجاح."
-      );
-
-
-    } catch (error) {
-
-      alert(
-        "تعذر إضافة الخدمة:\n" +
-        error.message
-      );
-
-    }
+    return;
 
   }
+
+
+  try {
+
+    await apiRequest(
+      "addService",
+      {
+        clinicId,
+        name,
+        icon,
+        description,
+        serviceType,
+        price
+      }
+    );
+
+
+    document.getElementById(
+      `service-name-${clinicId}`
+    ).value = "";
+
+    document.getElementById(
+      `service-icon-${clinicId}`
+    ).value = "🦷";
+
+    document.getElementById(
+      `service-description-${clinicId}`
+    ).value = "";
+
+    document.getElementById(
+      `service-type-${clinicId}`
+    ).value = "";
+
+    document.getElementById(
+      `service-price-${clinicId}`
+    ).value = "";
+
+
+    await refreshData();
+
+
+    showToast(
+      "تمت إضافة الخدمة بنجاح."
+    );
+
+
+  } catch (error) {
+
+    alert(
+      "تعذر إضافة الخدمة:\n" +
+      error.message
+    );
+
+  }
+
+}
+
 
 
   /* =====================================================
@@ -2761,71 +2790,84 @@ document.getElementById(
      ===================================================== */
 
   async function saveEditedService(
-    clinicId,
-    serviceId
-  ) {
+  clinicId,
+  serviceId
+) {
 
-    const name =
-      document.getElementById(
-        `edit-name-${clinicId}-${serviceId}`
-      ).value.trim();
-
-
-    const icon =
-      document.getElementById(
-        `edit-icon-${clinicId}-${serviceId}`
-      ).value.trim() ||
-      "🩺";
+  const name =
+    document.getElementById(
+      `edit-name-${clinicId}-${serviceId}`
+    ).value.trim();
 
 
-    const description =
-      document.getElementById(
-        `edit-description-${clinicId}-${serviceId}`
-      ).value.trim();
+  const icon =
+    document.getElementById(
+      `edit-icon-${clinicId}-${serviceId}`
+    ).value.trim() || "🩺";
 
 
-    if (!name) {
-
-      alert(
-        "من فضلك اكتب اسم الخدمة."
-      );
-
-      return;
-
-    }
+  const description =
+    document.getElementById(
+      `edit-description-${clinicId}-${serviceId}`
+    ).value.trim();
 
 
-    try {
-
-      await apiRequest(
-        "editService",
-        {
-          serviceId,
-          name,
-          icon,
-          description
-        }
-      );
+  const serviceType =
+    document.getElementById(
+      `edit-type-${clinicId}-${serviceId}`
+    ).value.trim();
 
 
-      await refreshData();
+  const price =
+    document.getElementById(
+      `edit-price-${clinicId}-${serviceId}`
+    ).value.trim();
 
 
-      showToast(
-        "تم حفظ تعديل الخدمة."
-      );
+  if (!name) {
 
+    alert(
+      "من فضلك اكتب اسم الخدمة."
+    );
 
-    } catch (error) {
-
-      alert(
-        "تعذر تعديل الخدمة:\n" +
-        error.message
-      );
-
-    }
+    return;
 
   }
+
+
+  try {
+
+    await apiRequest(
+      "editService",
+      {
+        serviceId,
+        name,
+        icon,
+        description,
+        serviceType,
+        price
+      }
+    );
+
+
+    await refreshData();
+
+
+    showToast(
+      "تم حفظ تعديل الخدمة."
+    );
+
+
+  } catch (error) {
+
+    alert(
+      "تعذر تعديل الخدمة:\n" +
+      error.message
+    );
+
+  }
+
+}
 
 
   /* =====================================================
@@ -3175,18 +3217,49 @@ document.getElementById(
             </div>
 
 
-            <div class="form-group full">
+          <div class="form-group full">
 
-              <label>
-                تفاصيل الخدمة
-              </label>
+  <label>
+    تفاصيل الخدمة
+  </label>
 
-              <textarea
-                id="service-description-${escapeHTML(clinic.id)}"
-                placeholder="اكتب تفاصيل الخدمة..."
-              ></textarea>
+  <textarea
+    id="service-description-${escapeHTML(clinic.id)}"
+    placeholder="اكتب تفاصيل الخدمة..."
+  ></textarea>
 
-            </div>
+</div>
+
+
+<div class="form-group">
+
+  <label>
+    نوع الخدمة
+  </label>
+
+  <input
+    type="text"
+    id="service-type-${escapeHTML(clinic.id)}"
+    placeholder="مثال: عملية بالمنظار"
+  />
+
+</div>
+
+
+<div class="form-group">
+
+  <label>
+    السعر
+  </label>
+
+  <input
+    type="text"
+    id="service-price-${escapeHTML(clinic.id)}"
+    placeholder="مثال: 50"
+  />
+
+</div>
+
 
           </div>
 
@@ -3373,6 +3446,46 @@ document.getElementById(
                       >${escapeHTML(service.description || "")}</textarea>
 
                     </div>
+<div class="form-group">
+
+  <label>
+    نوع الخدمة
+  </label>
+
+  <input
+    type="text"
+    id="edit-type-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+    value="${escapeHTML(
+      service.options &&
+      service.options.length
+        ? service.options[0].type || ""
+        : ""
+    )}"
+    placeholder="مثال: عملية بالمنظار"
+  />
+
+</div>
+
+
+<div class="form-group">
+
+  <label>
+    السعر
+  </label>
+
+  <input
+    type="text"
+    id="edit-price-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+    value="${escapeHTML(
+      service.options &&
+      service.options.length
+        ? service.options[0].price || ""
+        : ""
+    )}"
+    placeholder="مثال: 50"
+  />
+
+</div>
 
                   </div>
 
