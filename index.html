@@ -640,77 +640,6 @@ padding: 18px;
       display: flex;
       gap: 8px;
     }
-/* ================= SERVICE OPTIONS ADMIN ================= */
-
-.service-options-admin {
-  margin-top: 15px;
-  padding: 15px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
-
-.service-options-admin-title {
-  font-weight: bold;
-  margin-bottom: 12px;
-}
-
-.service-option-admin {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px;
-  background: #f8faf9;
-  border-radius: 9px;
-  margin-top: 8px;
-}
-
-.service-option-admin-info {
-  min-width: 0;
-}
-
-.service-option-admin-actions {
-  display: flex;
-  gap: 5px;
-  flex-shrink: 0;
-}
-
-.add-option-form {
-  display: none;
-  margin-top: 12px;
-  padding: 12px;
-  background: #f0fdfa;
-  border: 1px solid #99f6e4;
-  border-radius: 10px;
-}
-
-.add-option-form.active {
-  display: block;
-}
-
-.option-empty {
-  color: var(--muted);
-  font-size: 13px;
-  padding: 8px 0;
-}
-
-@media (max-width: 650px) {
-
-  .service-option-admin {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .service-option-admin-actions {
-    width: 100%;
-  }
-
-  .service-option-admin-actions button {
-    flex: 1;
-  }
-
-}
 
     /* ================= PASSWORD MODAL ================= */
 
@@ -2883,6 +2812,18 @@ document.getElementById(
     ).value.trim();
 
 
+  const serviceType =
+    document.getElementById(
+      `edit-type-${clinicId}-${serviceId}`
+    ).value.trim();
+
+
+  const price =
+    document.getElementById(
+      `edit-price-${clinicId}-${serviceId}`
+    ).value.trim();
+
+
   if (!name) {
 
     alert(
@@ -2896,15 +2837,17 @@ document.getElementById(
 
   try {
 
-   await apiRequest(
-  "editService",
-  {
-    serviceId,
-    name,
-    icon,
-    description
-  }
-);
+    await apiRequest(
+      "editService",
+      {
+        serviceId,
+        name,
+        icon,
+        description,
+        serviceType,
+        price
+      }
+    );
 
 
     await refreshData();
@@ -3288,168 +3231,32 @@ document.getElementById(
 </div>
 
 
-<div class="form-group full">
+<div class="form-group">
 
-  <div class="service-options-admin">
+  <label>
+    نوع الخدمة
+  </label>
 
-    <div class="service-options-admin-title">
-      أنواع الخدمة والأسعار
-    </div>
+  <input
+    type="text"
+    id="service-type-${escapeHTML(clinic.id)}"
+    placeholder="مثال: عملية بالمنظار"
+  />
 
-    <div id="options-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}">
-
-      ${
-        service.options &&
-        service.options.length
-          ? service.options.map((option, optionIndex) => `
-
-              <div class="service-option-admin">
-
-                <div class="service-option-admin-info">
-
-                  <strong>
-                    ${escapeHTML(
-                      option.type || "نوع بدون اسم"
-                    )}
-                  </strong>
-
-                  <span style="
-                    color:var(--primary);
-                    margin-right:8px;
-                    font-weight:bold;
-                  ">
-                    ${
-                      option.price
-                        ? escapeHTML(option.price) + " دك"
-                        : "بدون سعر"
-                    }
-                  </span>
-
-                </div>
-
-                <div class="service-option-admin-actions">
-
-                  <button
-                    type="button"
-                    class="edit-btn"
-                    onclick="editOption(
-                      '${escapeJS(clinic.id)}',
-                      '${escapeJS(service.id)}',
-                      ${optionIndex}
-                    )"
-                  >
-                    ✏️ تعديل
-                  </button>
-
-                  <button
-                    type="button"
-                    class="danger-btn"
-                    onclick="deleteOption(
-                      '${escapeJS(clinic.id)}',
-                      '${escapeJS(service.id)}',
-                      ${optionIndex}
-                    )"
-                  >
-                    حذف
-                  </button>
-
-                </div>
-
-              </div>
-
-            `).join("")
-
-          : `
-              <div class="option-empty">
-                لا توجد أنواع مضافة لهذه الخدمة.
-              </div>
-            `
-      }
-
-    </div>
+</div>
 
 
-    <button
-      type="button"
-      class="secondary-btn"
-      style="margin-top:12px;"
-      onclick="toggleAddOption(
-        '${escapeJS(clinic.id)}',
-        '${escapeJS(service.id)}'
-      )"
-    >
-      ➕ إضافة نوع جديد
-    </button>
+<div class="form-group">
 
+  <label>
+    السعر
+  </label>
 
-    <div
-      id="add-option-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-      class="add-option-form"
-    >
-
-      <div class="form-grid">
-
-        <div class="form-group">
-
-          <label>
-            نوع الخدمة
-          </label>
-
-          <input
-            type="text"
-            id="new-option-type-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-            placeholder="مثال: كشف أولي"
-          />
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            السعر
-          </label>
-
-          <input
-            type="text"
-            id="new-option-price-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-            placeholder="مثال: 50"
-          />
-
-        </div>
-
-      </div>
-
-
-      <div class="edit-form-buttons">
-
-        <button
-          type="button"
-          class="primary-btn"
-          onclick="addOption(
-            '${escapeJS(clinic.id)}',
-            '${escapeJS(service.id)}'
-          )"
-        >
-          ➕ إضافة النوع
-        </button>
-
-        <button
-          type="button"
-          class="secondary-btn"
-          onclick="toggleAddOption(
-            '${escapeJS(clinic.id)}',
-            '${escapeJS(service.id)}'
-          )"
-        >
-          إلغاء
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
+  <input
+    type="text"
+    id="service-price-${escapeHTML(clinic.id)}"
+    placeholder="مثال: 50"
+  />
 
 </div>
 
@@ -3724,241 +3531,6 @@ document.getElementById(
 
       }
     );
-
-  }
-
-/* =====================================================
-     إدارة أنواع الخدمة
-     ===================================================== */
-
-  function toggleAddOption(
-    clinicId,
-    serviceId
-  ) {
-
-    const form =
-      document.getElementById(
-        `add-option-${clinicId}-${serviceId}`
-      );
-
-    if (!form) return;
-
-    form.classList.toggle("active");
-
-  }
-
-
-  async function addOption(
-    clinicId,
-    serviceId
-  ) {
-
-    const typeInput =
-      document.getElementById(
-        `new-option-type-${clinicId}-${serviceId}`
-      );
-
-    const priceInput =
-      document.getElementById(
-        `new-option-price-${clinicId}-${serviceId}`
-      );
-
-    const serviceType =
-      typeInput.value.trim();
-
-    const price =
-      priceInput.value.trim();
-
-    if (!serviceType) {
-
-      alert(
-        "من فضلك اكتب نوع الخدمة."
-      );
-
-      typeInput.focus();
-
-      return;
-
-    }
-
-    try {
-
-      await apiRequest(
-        "addServiceOption",
-        {
-          serviceId,
-          serviceType,
-          price
-        }
-      );
-
-      await refreshData();
-
-      showToast(
-        "تمت إضافة نوع الخدمة بنجاح."
-      );
-
-    } catch (error) {
-
-      alert(
-        "تعذر إضافة نوع الخدمة:\n" +
-        error.message
-      );
-
-    }
-
-  }
-
-
-  async function deleteOption(
-    clinicId,
-    serviceId,
-    optionIndex
-  ) {
-
-    const clinic =
-      clinics.find(
-        c =>
-          String(c.id) ===
-          String(clinicId)
-      );
-
-    if (!clinic) return;
-
-    const service =
-      clinic.services.find(
-        s =>
-          String(s.id) ===
-          String(serviceId)
-      );
-
-    if (!service) return;
-
-    const option =
-      service.options &&
-      service.options[optionIndex];
-
-    if (!option) return;
-
-    const confirmDelete =
-      confirm(
-        `هل تريد حذف نوع الخدمة "${option.type || "بدون اسم"}"؟`
-      );
-
-    if (!confirmDelete) return;
-
-    try {
-
-      await apiRequest(
-        "deleteServiceOption",
-        {
-          serviceId,
-          optionIndex
-        }
-      );
-
-      await refreshData();
-
-      showToast(
-        "تم حذف نوع الخدمة."
-      );
-
-    } catch (error) {
-
-      alert(
-        "تعذر حذف نوع الخدمة:\n" +
-        error.message
-      );
-
-    }
-
-  }
-
-
-  async function editOption(
-    clinicId,
-    serviceId,
-    optionIndex
-  ) {
-
-    const clinic =
-      clinics.find(
-        c =>
-          String(c.id) ===
-          String(clinicId)
-      );
-
-    if (!clinic) return;
-
-    const service =
-      clinic.services.find(
-        s =>
-          String(s.id) ===
-          String(serviceId)
-      );
-
-    if (!service) return;
-
-    const option =
-      service.options &&
-      service.options[optionIndex];
-
-    if (!option) return;
-
-    const newType =
-      prompt(
-        "اكتب نوع الخدمة:",
-        option.type || ""
-      );
-
-    if (newType === null) return;
-
-    const newPrice =
-      prompt(
-        "اكتب السعر:",
-        option.price || ""
-      );
-
-    if (newPrice === null) return;
-
-    if (!newType.trim()) {
-
-      alert(
-        "نوع الخدمة مطلوب."
-      );
-
-      return;
-
-    }
-
-    try {
-
-      await apiRequest(
-        "editServiceOption",
-        {
-          serviceId,
-          optionIndex,
-          serviceType:
-            newType.trim(),
-          price:
-            newPrice.trim()
-        }
-      );
-
-      await refreshData();
-
-      showToast(
-        "تم تعديل نوع الخدمة."
-      );
-
-    } catch (error) {
-
-      alert(
-        "تعذر تعديل نوع الخدمة:\n" +
-        error.message
-      );
-
-    }
 
   }
 
