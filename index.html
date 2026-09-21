@@ -822,6 +822,142 @@ padding: 18px;
         flex: 1;
       }
     }
+    /* ================= ADMIN SERVICE OPTIONS ================= */
+
+.admin-service-options {
+  margin-top: 18px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.admin-service-options-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.admin-service-options-title strong {
+  font-size: 15px;
+}
+
+.service-option-admin {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  background: #f8faf9;
+  border: 1px solid #e5ecea;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.service-option-admin input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  background: white;
+}
+
+.service-option-admin input:focus {
+  border-color: var(--secondary);
+}
+
+.service-option-admin-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.add-option-btn {
+  background: #ecfdf5;
+  color: #047857;
+  padding: 9px 13px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.save-option-btn {
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.option-empty {
+  color: var(--muted);
+  font-size: 13px;
+  padding: 10px 0;
+}
+
+.admin-clinic {
+  margin-top: 25px;
+  padding: 22px;
+  border: 2px solid #d8e7e4;
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f8fcfb 100%
+  );
+  box-shadow: 0 8px 25px rgba(15, 118, 110, 0.07);
+}
+
+.admin-clinic:first-child {
+  margin-top: 0;
+}
+
+.admin-clinic-header {
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+  border-bottom: 2px solid #e8f0ee;
+}
+
+.admin-clinic-header strong {
+  font-size: 18px;
+}
+
+.admin-clinic > div > strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: var(--primary-dark);
+}
+
+@media (max-width: 650px) {
+
+  .admin-clinic {
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 18px;
+  }
+
+  .service-option-admin {
+    grid-template-columns: 1fr;
+  }
+
+  .service-option-admin-actions {
+    width: 100%;
+  }
+
+  .service-option-admin-actions button {
+    flex: 1;
+  }
+
+  .admin-service-options-title {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+}
+
   </style>
 </head>
 
@@ -2812,18 +2948,6 @@ document.getElementById(
     ).value.trim();
 
 
-  const serviceType =
-    document.getElementById(
-      `edit-type-${clinicId}-${serviceId}`
-    ).value.trim();
-
-
-  const price =
-    document.getElementById(
-      `edit-price-${clinicId}-${serviceId}`
-    ).value.trim();
-
-
   if (!name) {
 
     alert(
@@ -2837,15 +2961,21 @@ document.getElementById(
 
   try {
 
+    /*
+      تعديل بيانات الخدمة الأساسية فقط.
+      
+      لا نرسل serviceType أو price هنا،
+      لأن أنواع الخدمة يتم التعامل معها
+      بشكل مستقل.
+    */
+
     await apiRequest(
       "editService",
       {
         serviceId,
         name,
         icon,
-        description,
-        serviceType,
-        price
+        description
       }
     );
 
@@ -2862,6 +2992,264 @@ document.getElementById(
 
     alert(
       "تعذر تعديل الخدمة:\n" +
+      error.message
+    );
+
+  }
+
+}
+
+/* =====================================================
+   إضافة نوع خدمة
+===================================================== */
+
+async function addServiceOption(
+  serviceId,
+  clinicId
+) {
+
+  const typeInput =
+    document.getElementById(
+      `new-option-type-${clinicId}-${serviceId}`
+    );
+
+  const priceInput =
+    document.getElementById(
+      `new-option-price-${clinicId}-${serviceId}`
+    );
+
+
+  if (!typeInput || !priceInput) {
+
+    return;
+
+  }
+
+
+  const serviceType =
+    typeInput.value.trim();
+
+
+  const price =
+    priceInput.value.trim();
+
+
+  if (!serviceType) {
+
+    alert(
+      "من فضلك اكتب نوع الخدمة."
+    );
+
+    typeInput.focus();
+
+    return;
+
+  }
+
+
+  const clinic =
+    clinics.find(
+      c =>
+        String(c.id) ===
+        String(clinicId)
+    );
+
+
+  const service =
+    clinic?.services.find(
+      s =>
+        String(s.id) ===
+        String(serviceId)
+    );
+
+
+  if (service) {
+
+    const duplicate =
+      (service.options || []).some(
+        option =>
+          String(option.type || "")
+            .trim()
+            .toLowerCase() ===
+          serviceType
+            .trim()
+            .toLowerCase()
+      );
+
+
+    if (duplicate) {
+
+      alert(
+        "هذا النوع موجود بالفعل داخل الخدمة."
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  try {
+
+    await apiRequest(
+      "addServiceOption",
+      {
+        serviceId,
+        serviceType,
+        price
+      }
+    );
+
+
+    await refreshData();
+
+
+    showToast(
+      "تمت إضافة نوع الخدمة بنجاح."
+    );
+
+
+  } catch (error) {
+
+    alert(
+      "تعذر إضافة نوع الخدمة:\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   تعديل نوع خدمة
+===================================================== */
+
+async function saveServiceOption(
+  serviceId,
+  optionIndex,
+  clinicId
+) {
+
+  const typeInput =
+    document.getElementById(
+      `option-type-${clinicId}-${serviceId}-${optionIndex}`
+    );
+
+
+  const priceInput =
+    document.getElementById(
+      `option-price-${clinicId}-${serviceId}-${optionIndex}`
+    );
+
+
+  if (!typeInput || !priceInput) {
+
+    return;
+
+  }
+
+
+  const serviceType =
+    typeInput.value.trim();
+
+
+  const price =
+    priceInput.value.trim();
+
+
+  if (!serviceType) {
+
+    alert(
+      "من فضلك اكتب نوع الخدمة."
+    );
+
+    typeInput.focus();
+
+    return;
+
+  }
+
+
+  try {
+
+    await apiRequest(
+      "editServiceOption",
+      {
+        serviceId,
+        optionIndex,
+        serviceType,
+        price
+      }
+    );
+
+
+    await refreshData();
+
+
+    showToast(
+      "تم تعديل نوع الخدمة."
+    );
+
+
+  } catch (error) {
+
+    alert(
+      "تعذر تعديل نوع الخدمة:\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   حذف نوع خدمة
+===================================================== */
+
+async function deleteServiceOption(
+  serviceId,
+  optionIndex
+) {
+
+  const confirmed =
+    confirm(
+      "هل أنت متأكد من حذف نوع الخدمة هذا؟"
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  try {
+
+    await apiRequest(
+      "deleteServiceOption",
+      {
+        serviceId,
+        optionIndex
+      }
+    );
+
+
+    await refreshData();
+
+
+    showToast(
+      "تم حذف نوع الخدمة."
+    );
+
+
+  } catch (error) {
+
+    alert(
+      "تعذر حذف نوع الخدمة:\n" +
       error.message
     );
 
@@ -3398,124 +3786,274 @@ document.getElementById(
                 </div>
 
 
-                <div
-                  id="edit-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-                  class="edit-form"
-                >
+               <div
+  id="edit-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+  class="edit-form"
+>
 
-                  <div class="form-grid">
+  <div class="form-grid">
 
-                    <div class="form-group">
+    <div class="form-group">
 
-                      <label>
-                        اسم الخدمة
-                      </label>
+      <label>
+        اسم الخدمة
+      </label>
 
-                      <input
-                        type="text"
-                        id="edit-name-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-                        value="${escapeHTML(service.name)}"
-                      />
+      <input
+        type="text"
+        id="edit-name-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+        value="${escapeHTML(service.name)}"
+      />
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        الأيقونة
+      </label>
+
+      <input
+        type="text"
+        id="edit-icon-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+        value="${escapeHTML(service.icon)}"
+      />
+
+    </div>
+
+
+    <div class="form-group full">
+
+      <label>
+        تفاصيل الخدمة
+      </label>
+
+      <textarea
+        id="edit-description-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+      >${escapeHTML(service.description || "")}</textarea>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= TYPES ================= -->
+
+  <div class="admin-service-options">
+
+    <div class="admin-service-options-title">
+
+      <strong>
+        🏷️ أنواع الخدمة
+      </strong>
+
+      <button
+        type="button"
+        class="add-option-btn"
+        onclick="
+          document
+            .getElementById(
+              'new-option-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}'
+            )
+            .scrollIntoView({
+              behavior:'smooth',
+              block:'center'
+            });
+        "
+      >
+        ➕ إضافة نوع خدمة
+      </button>
+
+    </div>
+
+
+    <div>
+
+      ${
+        service.options &&
+        service.options.length
+          ? service.options
+              .map(
+                (option, optionIndex) => `
+
+                  <div class="service-option-admin">
+
+                    <input
+                      type="text"
+                      id="option-type-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}-${optionIndex}"
+                      value="${escapeHTML(option.type || "")}"
+                      placeholder="نوع الخدمة"
+                    />
+
+
+                    <input
+                      type="text"
+                      id="option-price-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}-${optionIndex}"
+                      value="${escapeHTML(option.price || "")}"
+                      placeholder="السعر"
+                    />
+
+
+                    <div class="service-option-admin-actions">
+
+                      <button
+                        type="button"
+                        class="save-option-btn"
+                        onclick="
+                          saveServiceOption(
+                            '${escapeJS(service.id)}',
+                            ${optionIndex},
+                            '${escapeJS(clinic.id)}'
+                          )
+                        "
+                        title="حفظ النوع"
+                      >
+                        💾
+                      </button>
+
+
+                      <button
+                        type="button"
+                        class="danger-btn"
+                        onclick="
+                          deleteServiceOption(
+                            '${escapeJS(service.id)}',
+                            ${optionIndex}
+                          )
+                        "
+                        title="حذف النوع"
+                      >
+                        🗑️
+                      </button>
 
                     </div>
-
-
-                    <div class="form-group">
-
-                      <label>
-                        الأيقونة
-                      </label>
-
-                      <input
-                        type="text"
-                        id="edit-icon-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-                        value="${escapeHTML(service.icon)}"
-                      />
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                      <label>
-                        تفاصيل الخدمة
-                      </label>
-
-                      <textarea
-                        id="edit-description-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-                      >${escapeHTML(service.description || "")}</textarea>
-
-                    </div>
-<div class="form-group">
-
-  <label>
-    نوع الخدمة
-  </label>
-
-  <input
-    type="text"
-    id="edit-type-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-    value="${escapeHTML(
-      service.options &&
-      service.options.length
-        ? service.options[0].type || ""
-        : ""
-    )}"
-    placeholder="مثال: عملية بالمنظار"
-  />
-
-</div>
-
-
-<div class="form-group">
-
-  <label>
-    السعر
-  </label>
-
-  <input
-    type="text"
-    id="edit-price-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
-    value="${escapeHTML(
-      service.options &&
-      service.options.length
-        ? service.options[0].price || ""
-        : ""
-    )}"
-    placeholder="مثال: 50"
-  />
-
-</div>
 
                   </div>
 
+                `
+              )
+              .join("")
+          : `
+              <div class="option-empty">
+                لا توجد أنواع خدمة مضافة حاليًا.
+              </div>
+            `
+      }
 
-                  <div class="edit-form-buttons">
-
-                    <button
-                      class="primary-btn"
-                      onclick="saveEditedService(
-                        '${escapeJS(clinic.id)}',
-                        '${escapeJS(service.id)}'
-                      )"
-                    >
-                      💾 حفظ التعديل
-                    </button>
+    </div>
 
 
-                    <button
-                      class="secondary-btn"
-                      onclick="toggleEditService(
-                        '${escapeJS(clinic.id)}',
-                        '${escapeJS(service.id)}'
-                      )"
-                    >
-                      إلغاء
-                    </button>
+    <!-- ================= NEW OPTION ================= -->
 
-                  </div>
+    <div
+      id="new-option-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+      style="
+        margin-top:15px;
+        padding-top:15px;
+        border-top:1px dashed #cbdedb;
+      "
+    >
 
-                </div>
+      <strong
+        style="
+          display:block;
+          margin-bottom:10px;
+          color:#0f766e;
+          font-size:14px;
+        "
+      >
+        ➕ إضافة نوع جديد
+      </strong>
+
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label>
+            نوع الخدمة الجديد
+          </label>
+
+          <input
+            type="text"
+            id="new-option-type-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+            placeholder="مثال: كشف أول مرة"
+          />
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            السعر
+          </label>
+
+          <input
+            type="text"
+            id="new-option-price-${escapeHTML(clinic.id)}-${escapeHTML(service.id)}"
+            placeholder="مثال: 100"
+          />
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="primary-btn"
+        onclick="
+          addServiceOption(
+            '${escapeJS(service.id)}',
+            '${escapeJS(clinic.id)}'
+          )
+        "
+      >
+        ➕ إضافة النوع
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= SERVICE BUTTONS ================= -->
+
+  <div
+    class="edit-form-buttons"
+    style="margin-top:15px;"
+  >
+
+    <button
+      class="primary-btn"
+      onclick="
+        saveEditedService(
+          '${escapeJS(clinic.id)}',
+          '${escapeJS(service.id)}'
+        )
+      "
+    >
+      💾 حفظ بيانات الخدمة
+    </button>
+
+
+    <button
+      class="secondary-btn"
+      onclick="
+        toggleEditService(
+          '${escapeJS(clinic.id)}',
+          '${escapeJS(service.id)}'
+        )
+      "
+    >
+      إلغاء
+    </button>
+
+  </div>
+
+</div>
 
               `;
 
