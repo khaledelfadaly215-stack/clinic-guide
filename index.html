@@ -390,9 +390,14 @@ flex-shrink: 0;
 
 .service-options-header > div,
 .service-option-row > div {
-  padding: 5px 10px;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  line-height: 1 !important;
   box-sizing: border-box;
 }
+
 
 .service-options-header > div:last-child,
 .service-option-row > div:last-child {
@@ -401,8 +406,17 @@ flex-shrink: 0;
 }
 
 .service-option-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 130px;
+  align-items: start !important;
   border-top: 1px solid var(--border);
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
+
 
 .service-option-row:nth-child(even) {
   background: #f8faf9;
@@ -983,7 +997,13 @@ padding: 18px;
   padding-bottom: 3px !important;
   line-height: 1.2 !important;
 }
-    
+    .service-options,
+.service-options-header,
+.service-option-row,
+.service-option-row > div {
+  outline: 2px solid red !important;
+}
+
   </style>
 </head>
 
