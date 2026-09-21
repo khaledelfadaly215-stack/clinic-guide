@@ -60,13 +60,18 @@
     }
 
     .header-content {
-      max-width: 1100px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 10px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
 
     .logo {
       display: flex;
@@ -362,55 +367,62 @@ flex-shrink: 0;
 /* ================= SERVICE OPTIONS TABLE ================= */
 
 .service-options {
-width: 100%;
-border: 1px solid var(--border);
-border-radius: 14px;
-overflow: hidden;
-background: white;
-margin-top: 5px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: white;
+  margin-top: 5px;
 }
 
 .service-options-header,
 .service-option-row {
-display: grid;
-grid-template-columns: 1fr 130px;
-align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px;
+  align-items: center;
 }
 
 .service-options-header {
-background: var(--primary);
-color: white;
-font-weight: bold;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
 }
 
 .service-options-header > div,
 .service-option-row > div {
-padding: 13px 12px;
+  padding: 8px 12px;
 }
 
 .service-options-header > div:last-child,
 .service-option-row > div:last-child {
-text-align: center;
-border-right: 1px solid var(--border);
+  text-align: center;
+  border-right: 1px solid var(--border);
 }
 
 .service-option-row {
-border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border);
 }
 
 .service-option-row:nth-child(even) {
-background: #f8faf9;
+  background: #f8faf9;
 }
 
 .service-option-row > div:first-child {
-color: var(--text);
-line-height: 1.7;
+  color: var(--text);
+
+  /* يسمح للنص بالنزول لأكثر من سطر */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+
+  /* ارتفاع السطر يتحدد تلقائيًا */
+  line-height: 1.4;
 }
 
 .service-option-row > div:last-child {
-color: var(--primary);
-font-weight: bold;
-white-space: nowrap;
+  color: var(--primary);
+  font-weight: bold;
+  white-space: nowrap;
 }
 
 /* ================= MOBILE SERVICE TABLE ================= */
