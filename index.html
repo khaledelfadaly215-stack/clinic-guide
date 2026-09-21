@@ -379,7 +379,7 @@ flex-shrink: 0;
 .service-option-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 130px;
-  align-items: center;
+  align-items: stretch;
 }
 
 .service-options-header {
@@ -391,6 +391,7 @@ flex-shrink: 0;
 .service-options-header > div,
 .service-option-row > div {
   padding: 8px 12px;
+  box-sizing: border-box;
 }
 
 .service-options-header > div:last-child,
@@ -401,6 +402,8 @@ flex-shrink: 0;
 
 .service-option-row {
   border-top: 1px solid var(--border);
+  height: auto;
+  min-height: 0;
 }
 
 .service-option-row:nth-child(even) {
