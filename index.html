@@ -367,20 +367,29 @@ flex-shrink: 0;
 /* ================= SERVICE OPTIONS TABLE ================= */
 
 .service-options {
+  display: block !important;
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
   background: white;
-  margin-top: 5px;
+  margin: 5px 0 0 0 !important;
+  padding: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
 }
 
 .service-options-header,
 .service-option-row {
-  display: grid;
+  display: grid !important;
   grid-template-columns: minmax(0, 1fr) 130px;
-  align-items: start;
+  align-items: start !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
 }
+
 
 .service-options-header {
   background: var(--primary);
@@ -440,26 +449,24 @@ flex-shrink: 0;
 
 @media (max-width: 650px) {
 
-.service-options-header,
-.service-option-row {
-grid-template-columns: 1fr 100px;
+  .service-options-header,
+  .service-option-row {
+    grid-template-columns: minmax(0, 1fr) 100px;
+    align-items: start !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .service-options-header > div,
+  .service-option-row > div {
+    padding: 7px 8px !important;
+    font-size: 13px;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
 }
 
-.service-options-header > div,
-.service-option-row > div {
-padding: 5px 8px;
-font-size: 13px;
-}
-
-}
-    .modal {
-max-height: 88vh;
-border-radius: 20px;
-}
-
-.modal-body {
-padding: 18px;
-}
     /* ================= ADMIN ================= */
 
     .admin-panel {
