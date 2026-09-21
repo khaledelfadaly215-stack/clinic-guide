@@ -379,7 +379,7 @@ flex-shrink: 0;
 .service-option-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 130px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .service-options-header {
@@ -390,7 +390,7 @@ flex-shrink: 0;
 
 .service-options-header > div,
 .service-option-row > div {
-  padding: 8px 12px;
+  padding: 5px 10px;
   box-sizing: border-box;
 }
 
@@ -402,8 +402,6 @@ flex-shrink: 0;
 
 .service-option-row {
   border-top: 1px solid var(--border);
-  height: auto;
-  min-height: 0;
 }
 
 .service-option-row:nth-child(even) {
@@ -412,14 +410,10 @@ flex-shrink: 0;
 
 .service-option-row > div:first-child {
   color: var(--text);
-
-  /* يسمح للنص بالنزول لأكثر من سطر */
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   word-break: normal;
-
-  /* ارتفاع السطر يتحدد تلقائيًا */
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 .service-option-row > div:last-child {
@@ -439,7 +433,7 @@ grid-template-columns: 1fr 100px;
 
 .service-options-header > div,
 .service-option-row > div {
-padding: 11px 8px;
+padding: 5px 8px;
 font-size: 13px;
 }
 
