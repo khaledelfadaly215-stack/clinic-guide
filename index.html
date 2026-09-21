@@ -334,11 +334,11 @@ flex-shrink: 0;
       padding: 25px;
     }
 
-    .modal-body p {
-      color: #475b59;
-      line-height: 1.9;
-      white-space: pre-line;
-    }
+    .modal-description {
+  color: #475b59;
+  line-height: 1.5;
+  white-space: pre-line;
+}
 
     .modal-buttons {
       display: flex;
@@ -997,12 +997,6 @@ padding: 18px;
   padding-bottom: 3px !important;
   line-height: 1.2 !important;
 }
-    .service-options,
-.service-options-header,
-.service-option-row,
-.service-option-row > div {
-  outline: 2px solid red !important;
-}
 
   </style>
 </head>
@@ -1232,9 +1226,10 @@ padding: 18px;
 
       <div class="modal-body">
 
-        <p id="modalDescription">
-          تفاصيل الخدمة
-        </p>
+       <div id="modalDescription" class="modal-description">
+  تفاصيل الخدمة
+</div>
+
 
         <div class="modal-buttons">
 
