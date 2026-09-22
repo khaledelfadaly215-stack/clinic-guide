@@ -72,7 +72,12 @@
   gap: 20px;
 }
 
-
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+    
     .logo {
       display: flex;
       align-items: center;
@@ -869,7 +874,16 @@ padding: 18px;
       .logo {
         flex-direction: column;
       }
+      
+.header-actions {
+  width: 100%;
+  justify-content: center;
+}
 
+.header-actions .patient-list-btn,
+.header-actions .admin-btn {
+  flex: 1;
+      }
       .container {
         padding: 25px 15px 50px;
       }
@@ -1061,16 +1075,16 @@ padding: 18px;
     /* ================= PATIENT LIST ================= */
 
 .patient-list-btn {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  z-index: 900;
-  background: var(--primary);
-  color: white;
-  padding: 13px 18px;
-  border-radius: 14px;
+  position: relative;
+  left: auto;
+  bottom: auto;
+  z-index: auto;
+  background: white;
+  color: var(--primary);
+  padding: 11px 16px;
+  border-radius: 10px;
   font-weight: bold;
-  box-shadow: 0 8px 25px rgba(15,118,110,0.25);
+  box-shadow: none;
   display: none;
   align-items: center;
   gap: 8px;
@@ -1081,8 +1095,8 @@ padding: 18px;
 }
 
 .patient-list-count {
-  background: white;
-  color: var(--primary);
+  background: var(--primary);
+  color: white;
   min-width: 24px;
   height: 24px;
   padding: 0 6px;
@@ -1262,23 +1276,6 @@ padding: 18px;
 
   </div>
 </header>
-
-<!-- ================= PATIENT LIST BUTTON ================= -->
-
-<button
-  id="patientListBtn"
-  class="patient-list-btn"
-  onclick="openPatientList()"
->
-  📋 قائمة المريض
-  <span
-    id="patientListCount"
-    class="patient-list-count"
-  >
-    0
-  </span>
-</button>
-
 
 <!-- ================= PATIENT LIST MODAL ================= -->
 
