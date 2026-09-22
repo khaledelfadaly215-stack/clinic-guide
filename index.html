@@ -134,6 +134,91 @@
       color: var(--muted);
     }
 
+    /* ================= SEARCH ================= */
+
+.search-box {
+  position: relative;
+  max-width: 650px;
+  margin: 0 auto 30px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 16px 50px 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: white;
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  box-shadow: var(--shadow);
+  transition: 0.25s;
+}
+
+.search-box input:focus {
+  border-color: var(--secondary);
+  box-shadow:
+    0 0 0 3px rgba(20, 184, 166, 0.12),
+    var(--shadow);
+}
+
+.search-icon {
+  position: absolute;
+  right: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 21px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.search-clear {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #eef2f2;
+  color: var(--muted);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.search-clear.show {
+  display: flex;
+}
+
+.search-results-info {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: -15px;
+  margin-bottom: 20px;
+}
+
+.search-service-result {
+  margin-top: 6px;
+  color: var(--primary);
+  font-size: 13px;
+}
+
+@media (max-width: 650px) {
+
+  .search-box {
+    margin-bottom: 22px;
+  }
+
+  .search-box input {
+    padding: 14px 45px 14px 15px;
+    font-size: 14px;
+  }
+
+}
+
     /* ================= CLINICS ================= */
 
     .clinics-grid {
@@ -1020,20 +1105,53 @@ padding: 18px;
 
     <section id="homePage">
 
-      <div class="page-title">
+    <div class="page-title">
 
-        <h2>اختر العيادة</h2>
+  <h2>اختر العيادة</h2>
 
-        <p>
-          اضغط على اسم العيادة لمعرفة الخدمات المتوفرة
-        </p>
+  <p>
+    اضغط على اسم العيادة لمعرفة الخدمات المتوفرة
+  </p>
 
-      </div>
+</div>
 
-      <div
-        id="clinicsGrid"
-        class="clinics-grid"
-      ></div>
+<div class="search-box">
+
+  <span class="search-icon">
+    🔎
+  </span>
+
+  <input
+    type="text"
+    id="homeSearch"
+    placeholder="ابحث عن عيادة أو خدمة..."
+    autocomplete="off"
+    oninput="searchHome()"
+  />
+
+  <button
+    type="button"
+    id="homeSearchClear"
+    class="search-clear"
+    onclick="clearHomeSearch()"
+    aria-label="مسح البحث"
+  >
+    ✕
+  </button>
+
+</div>
+
+<div
+  id="homeSearchInfo"
+  class="search-results-info"
+  style="display:none;"
+></div>
+
+<div
+  id="clinicsGrid"
+  class="clinics-grid"
+></div>
+
 
     </section>
 
@@ -1052,12 +1170,45 @@ padding: 18px;
         ← العودة للعيادات
       </button>
 
-      <div id="clinicHeader"></div>
+     <div id="clinicHeader"></div>
 
-      <div
-        id="servicesGrid"
-        class="services-grid"
-      ></div>
+<div class="search-box">
+
+  <span class="search-icon">
+    🔎
+  </span>
+
+  <input
+    type="text"
+    id="clinicSearch"
+    placeholder="ابحث عن خدمة داخل هذه العيادة..."
+    autocomplete="off"
+    oninput="searchClinicServices()"
+  />
+
+  <button
+    type="button"
+    id="clinicSearchClear"
+    class="search-clear"
+    onclick="clearClinicSearch()"
+    aria-label="مسح البحث"
+  >
+    ✕
+  </button>
+
+</div>
+
+<div
+  id="clinicSearchInfo"
+  class="search-results-info"
+  style="display:none;"
+></div>
+
+<div
+  id="servicesGrid"
+  class="services-grid"
+></div>
+
 
     </section>
 
@@ -1938,6 +2089,41 @@ grid.innerHTML = `
 
     currentClinic =
       clinic;
+const clinicSearch =
+  document.getElementById(
+    "clinicSearch"
+  );
+
+if (clinicSearch) {
+
+  clinicSearch.value = "";
+
+}
+
+const clinicSearchClear =
+  document.getElementById(
+    "clinicSearchClear"
+  );
+
+if (clinicSearchClear) {
+
+  clinicSearchClear.classList.remove(
+    "show"
+  );
+
+}
+
+const clinicSearchInfo =
+  document.getElementById(
+    "clinicSearchInfo"
+  );
+
+if (clinicSearchInfo) {
+
+  clinicSearchInfo.style.display =
+    "none";
+
+}
 
 
     document.getElementById(
@@ -1986,70 +2172,8 @@ grid.innerHTML = `
     `;
 
 
-    const grid =
-      document.getElementById(
-        "servicesGrid"
-      );
+renderClinicServices(clinic);
 
-
-    grid.innerHTML = "";
-
-
-    if (
-      clinic.services.length === 0
-    ) {
-
-      grid.innerHTML = `
-
-        <div class="empty">
-          لا توجد خدمات مضافة لهذه العيادة.
-        </div>
-
-      `;
-
-    } else {
-
-      clinic.services.forEach(
-        service => {
-
-          const card =
-            document.createElement(
-              "div"
-            );
-
-
-          card.className =
-            "service-card";
-
-
-          card.onclick = () =>
-            openService(
-              clinic.id,
-              service.id
-            );
-
-
-          card.innerHTML = `
-
-            <div class="service-icon">
-              ${escapeHTML(service.icon)}
-            </div>
-
-            <h3>
-              ${escapeHTML(service.name)}
-            </h3>
-
-          `;
-
-
-          grid.appendChild(
-            card
-          );
-
-        }
-      );
-
-    }
 
 
     if (updateURL) {
@@ -2076,6 +2200,571 @@ grid.innerHTML = `
 
   }
 
+
+  /* =====================================================
+   البحث في الصفحة الرئيسية
+===================================================== */
+
+function searchHome() {
+
+  const input =
+    document.getElementById("homeSearch");
+
+  const query =
+    input.value.trim().toLowerCase();
+
+  const clearButton =
+    document.getElementById(
+      "homeSearchClear"
+    );
+
+  clearButton.classList.toggle(
+    "show",
+    query.length > 0
+  );
+
+  const info =
+    document.getElementById(
+      "homeSearchInfo"
+    );
+
+
+  if (!query) {
+
+    info.style.display = "none";
+
+    renderClinics();
+
+    return;
+
+  }
+
+
+  const results = [];
+
+
+  clinics.forEach(clinic => {
+
+    const clinicName =
+      String(
+        clinic.name || ""
+      ).toLowerCase();
+
+
+    const clinicDescription =
+      String(
+        clinic.description || ""
+      ).toLowerCase();
+
+
+    const clinicMatches =
+      clinicName.includes(query) ||
+      clinicDescription.includes(query);
+
+
+    const matchingServices =
+      (clinic.services || []).filter(
+        service => {
+
+          const serviceName =
+            String(
+              service.name || ""
+            ).toLowerCase();
+
+
+          const serviceDescription =
+            String(
+              service.description || ""
+            ).toLowerCase();
+
+
+          const optionsText =
+            (service.options || [])
+              .map(
+                option =>
+                  `${option.type || ""} ${option.price || ""}`
+              )
+              .join(" ")
+              .toLowerCase();
+
+
+          return (
+            serviceName.includes(query) ||
+            serviceDescription.includes(query) ||
+            optionsText.includes(query)
+          );
+
+        }
+      );
+
+
+    if (
+      clinicMatches ||
+      matchingServices.length > 0
+    ) {
+
+      results.push({
+
+        clinic,
+        matchingServices
+
+      });
+
+    }
+
+  });
+
+
+  renderHomeSearchResults(
+    results,
+    query
+  );
+
+}
+
+
+/* =====================================================
+   عرض نتائج البحث الرئيسية
+===================================================== */
+
+function renderHomeSearchResults(
+  results,
+  query
+) {
+
+  const grid =
+    document.getElementById(
+      "clinicsGrid"
+    );
+
+
+  const info =
+    document.getElementById(
+      "homeSearchInfo"
+    );
+
+
+  grid.innerHTML = "";
+
+
+  if (results.length === 0) {
+
+    info.style.display = "block";
+
+    info.textContent =
+      `لا توجد نتائج مطابقة لـ "${query}"`;
+
+
+    grid.innerHTML = `
+
+      <div class="empty">
+
+        <div style="
+          font-size:40px;
+          margin-bottom:15px;
+        ">
+          🔍
+        </div>
+
+        لا توجد عيادات أو خدمات مطابقة للبحث.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  info.style.display = "block";
+
+  info.textContent =
+    `تم العثور على ${results.length} عيادة مطابقة`;
+
+
+  results.forEach(
+    ({ clinic, matchingServices }) => {
+
+      const card =
+        document.createElement("div");
+
+
+      card.className =
+        "clinic-card";
+
+
+      card.onclick = () =>
+        openClinic(clinic.id);
+
+
+      let serviceText = "";
+
+
+      if (
+        matchingServices.length > 0
+      ) {
+
+        serviceText = `
+
+          <div class="search-service-result">
+
+            ${matchingServices.length}
+            خدمة مطابقة
+
+          </div>
+
+        `;
+
+      }
+
+
+      card.innerHTML = `
+
+        <div class="clinic-icon">
+
+          ${escapeHTML(
+            clinic.icon
+          )}
+
+        </div>
+
+        <h3>
+
+          ${escapeHTML(
+            clinic.name
+          )}
+
+        </h3>
+
+        <span>
+
+          ${clinic.services.length}
+          خدمة متوفرة
+
+        </span>
+
+        ${serviceText}
+
+      `;
+
+
+      grid.appendChild(card);
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   مسح بحث الصفحة الرئيسية
+===================================================== */
+
+function clearHomeSearch() {
+
+  const input =
+    document.getElementById(
+      "homeSearch"
+    );
+
+
+  input.value = "";
+
+
+  document
+    .getElementById(
+      "homeSearchClear"
+    )
+    .classList.remove("show");
+
+
+  document
+    .getElementById(
+      "homeSearchInfo"
+    )
+    .style.display = "none";
+
+
+  renderClinics();
+
+
+  input.focus();
+
+}
+
+
+/* =====================================================
+   البحث داخل العيادة
+===================================================== */
+
+function searchClinicServices() {
+
+  if (!currentClinic) {
+
+    return;
+
+  }
+
+
+  const input =
+    document.getElementById(
+      "clinicSearch"
+    );
+
+
+  const query =
+    input.value.trim().toLowerCase();
+
+
+  const clearButton =
+    document.getElementById(
+      "clinicSearchClear"
+    );
+
+
+  clearButton.classList.toggle(
+    "show",
+    query.length > 0
+  );
+
+
+  const info =
+    document.getElementById(
+      "clinicSearchInfo"
+    );
+
+
+  const grid =
+    document.getElementById(
+      "servicesGrid"
+    );
+
+
+  if (!query) {
+
+    info.style.display = "none";
+
+    renderClinicServices(
+      currentClinic
+    );
+
+    return;
+
+  }
+
+
+  const services =
+    (currentClinic.services || [])
+      .filter(service => {
+
+        const serviceName =
+          String(
+            service.name || ""
+          ).toLowerCase();
+
+
+        const serviceDescription =
+          String(
+            service.description || ""
+          ).toLowerCase();
+
+
+        const optionsText =
+          (service.options || [])
+            .map(
+              option =>
+                `${option.type || ""} ${option.price || ""}`
+            )
+            .join(" ")
+            .toLowerCase();
+
+
+        return (
+          serviceName.includes(query) ||
+          serviceDescription.includes(query) ||
+          optionsText.includes(query)
+        );
+
+      });
+
+
+  info.style.display = "block";
+
+
+  if (services.length === 0) {
+
+    info.textContent =
+      `لا توجد خدمات مطابقة لـ "${query}"`;
+
+
+    grid.innerHTML = `
+
+      <div class="empty">
+
+        <div style="
+          font-size:40px;
+          margin-bottom:15px;
+        ">
+          🔍
+        </div>
+
+        لا توجد خدمة مطابقة للبحث.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  info.textContent =
+    `تم العثور على ${services.length} خدمة`;
+
+
+  renderClinicServices(
+    currentClinic,
+    services
+  );
+
+}
+
+
+/* =====================================================
+   عرض خدمات العيادة
+===================================================== */
+
+function renderClinicServices(
+  clinic,
+  services = null
+) {
+
+  const grid =
+    document.getElementById(
+      "servicesGrid"
+    );
+
+
+  const servicesToRender =
+    services ||
+    clinic.services ||
+    [];
+
+
+  grid.innerHTML = "";
+
+
+  if (
+    servicesToRender.length === 0
+  ) {
+
+    grid.innerHTML = `
+
+      <div class="empty">
+
+        لا توجد خدمات مضافة لهذه العيادة.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  servicesToRender.forEach(
+    service => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "service-card";
+
+
+      card.onclick = () =>
+        openService(
+          clinic.id,
+          service.id
+        );
+
+
+      card.innerHTML = `
+
+        <div class="service-icon">
+
+          ${escapeHTML(
+            service.icon
+          )}
+
+        </div>
+
+        <h3>
+
+          ${escapeHTML(
+            service.name
+          )}
+
+        </h3>
+
+      `;
+
+
+      grid.appendChild(card);
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   مسح بحث العيادة
+===================================================== */
+
+function clearClinicSearch() {
+
+  const input =
+    document.getElementById(
+      "clinicSearch"
+    );
+
+
+  input.value = "";
+
+
+  document
+    .getElementById(
+      "clinicSearchClear"
+    )
+    .classList.remove("show");
+
+
+  document
+    .getElementById(
+      "clinicSearchInfo"
+    )
+    .style.display = "none";
+
+
+  if (currentClinic) {
+
+    renderClinicServices(
+      currentClinic
+    );
+
+  }
+
+
+  input.focus();
+
+}
 
   /* =====================================================
      فتح الخدمة
