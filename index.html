@@ -847,83 +847,6 @@ padding: 18px;
       color: var(--muted);
     }
 
-    <!-- ================= PATIENT LIST BUTTON ================= -->
-
-<button
-  id="patientListBtn"
-  class="patient-list-btn"
-  onclick="openPatientList()"
->
-  📋 قائمة المريض
-  <span
-    id="patientListCount"
-    class="patient-list-count"
-  >
-    0
-  </span>
-</button>
-
-
-<!-- ================= PATIENT LIST MODAL ================= -->
-
-<div
-  id="patientListModal"
-  class="modal-overlay patient-list-modal"
-  onclick="closePatientListOutside(event)"
->
-
-  <div class="modal">
-
-    <div class="modal-top">
-
-      <div class="modal-icon">
-        📋
-      </div>
-
-      <h2>
-        قائمة تحاليل المريض
-      </h2>
-
-    </div>
-
-
-    <div class="patient-list-content">
-
-      <div
-        id="patientListItems"
-        class="patient-list-items"
-      ></div>
-
-
-      <div
-        id="patientListSummary"
-        class="patient-list-summary"
-      ></div>
-
-
-      <div class="patient-list-buttons">
-
-        <button
-          class="copy-list-btn"
-          onclick="copyPatientList()"
-        >
-          📋 نسخ القائمة كاملة
-        </button>
-
-        <button
-          class="clear-list-btn"
-          onclick="clearPatientList()"
-        >
-          🗑️ مسح القائمة
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
 
     /* ================= FOOTER ================= */
 
@@ -1308,39 +1231,112 @@ padding: 18px;
 
   <!-- ================= HEADER ================= -->
 
-  <header>
+<header>
+  <div class="header-content">
 
-    <div class="header-content">
+    <div class="logo" onclick="showHome()" title="العودة للصفحة الرئيسية">
+      <div class="logo-icon">🏥</div>
 
-      <div
-        class="logo"
-        onclick="showHome()"
-        title="العودة للصفحة الرئيسية"
-      >
-
-        <div class="logo-icon">
-          🏥
-        </div>
-
-        <div>
-          <h1>دليل العيادات</h1>
-          <p>العيادات والخدمات المتوفرة</p>
-        </div>
-
+      <div>
+        <h1>دليل العيادات</h1>
+        <p>العيادات والخدمات المتوفرة</p>
       </div>
+    </div>
+
+    <div class="header-actions">
 
       <button
-        class="admin-btn"
-        onclick="openAdmin()"
+        id="patientListBtn"
+        class="patient-list-btn"
+        onclick="openPatientList()"
       >
+        📋 قائمة المريض
+        <span id="patientListCount" class="patient-list-count">0</span>
+      </button>
+
+      <button class="admin-btn" onclick="openAdmin()">
         ⚙️ إدارة الموقع
       </button>
 
     </div>
 
-  </header>
+  </div>
+</header>
+
+<!-- ================= PATIENT LIST BUTTON ================= -->
+
+<button
+  id="patientListBtn"
+  class="patient-list-btn"
+  onclick="openPatientList()"
+>
+  📋 قائمة المريض
+  <span
+    id="patientListCount"
+    class="patient-list-count"
+  >
+    0
+  </span>
+</button>
 
 
+<!-- ================= PATIENT LIST MODAL ================= -->
+
+<div
+  id="patientListModal"
+  class="modal-overlay patient-list-modal"
+  onclick="closePatientListOutside(event)"
+>
+
+  <div class="modal">
+
+    <div class="modal-top">
+
+      <div class="modal-icon">
+        📋
+      </div>
+
+      <h2>
+        قائمة خدمات المريض
+      </h2>
+
+    </div>
+
+    <div class="patient-list-content">
+
+      <div
+        id="patientListItems"
+        class="patient-list-items"
+      ></div>
+
+      <div
+        id="patientListSummary"
+        class="patient-list-summary"
+      ></div>
+
+      <div class="patient-list-buttons">
+
+        <button
+          class="copy-list-btn"
+          onclick="copyPatientList()"
+        >
+          📋 نسخ القائمة كاملة
+        </button>
+
+        <button
+          class="clear-list-btn"
+          onclick="clearPatientList()"
+        >
+          🗑️ مسح القائمة
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
   <!-- ================= MAIN ================= -->
 
   <main class="container">
