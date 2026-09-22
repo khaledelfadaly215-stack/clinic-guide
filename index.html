@@ -2954,24 +2954,21 @@ function renderClinicServices(
   </h3>
 
   <button
-    type="button"
-    class="primary-btn"
-    style="
-      margin-top:12px;
-      width:100%;
-      padding:10px;
-    "
-    onclick="
-      event.stopPropagation();
-
-      addToPatientList(
-        '${escapeJS(clinic.id)}',
-        '${escapeJS(service.id)}'
-      );
-    "
-  >
-    ➕ إضافة للقائمة
-  </button>
+  type="button"
+  class="primary-btn add-to-list-btn"
+  data-clinic-id="${escapeHTML(clinic.id)}"
+  data-service-id="${escapeHTML(service.id)}"
+  style="margin-top:12px;width:100%;padding:10px;"
+  onclick="
+    event.stopPropagation();
+    addToPatientList(
+      '${escapeJS(clinic.id)}',
+      '${escapeJS(service.id)}'
+    );
+  "
+>
+  ➕ إضافة للقائمة
+</button>
 
 `;
 
@@ -5410,15 +5407,35 @@ function addToPatientList(
 
 
   updatePatientListUI();
+updateAddToListButtons();
 
-
-  showToast(
-    `تمت إضافة "${service.name}" إلى القائمة.`
+showToast(`تمت إضافة "${service.name}" إلى القائمة.`);
   );
 
 }
 
+function updateAddToListButtons() {
+  document.querySelectorAll(".add-to-list-btn").forEach(button => {
 
+    const clinicId = button.dataset.clinicId;
+    const serviceId = button.dataset.serviceId;
+
+    const isAdded = patientList.some(item =>
+      String(item.clinicId) === String(clinicId) &&
+      String(item.serviceId) === String(serviceId)
+    );
+
+    if (isAdded) {
+      button.innerHTML = "✅ تمت الإضافة";
+      button.disabled = true;
+    } else {
+      button.innerHTML = "➕ إضافة للقائمة";
+      button.disabled = false;
+    }
+
+  });
+}
+  
 /* =====================================================
    تحديث زر القائمة
 ===================================================== */
@@ -5717,16 +5734,11 @@ function removeFromPatientList(
     patientList[index];
 
 
-  patientList.splice(
-    index,
-    1
-  );
+  patientList.splice(index, 1);
 
-
-  updatePatientListUI();
-
-
-  renderPatientList();
+updatePatientListUI();
+updateAddToListButtons();
+renderPatientList();
 
 
   showToast(
@@ -5766,11 +5778,9 @@ function clearPatientList() {
 
   patientList = [];
 
-
-  updatePatientListUI();
-
-
-  renderPatientList();
+updatePatientListUI();
+updateAddToListButtons();
+renderPatientList();
 
 
   showToast(
