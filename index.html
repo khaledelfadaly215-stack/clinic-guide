@@ -847,6 +847,84 @@ padding: 18px;
       color: var(--muted);
     }
 
+    <!-- ================= PATIENT LIST BUTTON ================= -->
+
+<button
+  id="patientListBtn"
+  class="patient-list-btn"
+  onclick="openPatientList()"
+>
+  📋 قائمة المريض
+  <span
+    id="patientListCount"
+    class="patient-list-count"
+  >
+    0
+  </span>
+</button>
+
+
+<!-- ================= PATIENT LIST MODAL ================= -->
+
+<div
+  id="patientListModal"
+  class="modal-overlay patient-list-modal"
+  onclick="closePatientListOutside(event)"
+>
+
+  <div class="modal">
+
+    <div class="modal-top">
+
+      <div class="modal-icon">
+        📋
+      </div>
+
+      <h2>
+        قائمة تحاليل المريض
+      </h2>
+
+    </div>
+
+
+    <div class="patient-list-content">
+
+      <div
+        id="patientListItems"
+        class="patient-list-items"
+      ></div>
+
+
+      <div
+        id="patientListSummary"
+        class="patient-list-summary"
+      ></div>
+
+
+      <div class="patient-list-buttons">
+
+        <button
+          class="copy-list-btn"
+          onclick="copyPatientList()"
+        >
+          📋 نسخ القائمة كاملة
+        </button>
+
+        <button
+          class="clear-list-btn"
+          onclick="clearPatientList()"
+        >
+          🗑️ مسح القائمة
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
     /* ================= FOOTER ================= */
 
     footer {
@@ -1053,6 +1131,172 @@ padding: 18px;
   .admin-service-options-title {
     align-items: stretch;
     flex-direction: column;
+  }
+
+}
+
+    /* ================= PATIENT LIST ================= */
+
+.patient-list-btn {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 900;
+  background: var(--primary);
+  color: white;
+  padding: 13px 18px;
+  border-radius: 14px;
+  font-weight: bold;
+  box-shadow: 0 8px 25px rgba(15,118,110,0.25);
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.patient-list-btn.show {
+  display: flex;
+}
+
+.patient-list-count {
+  background: white;
+  color: var(--primary);
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.patient-list-modal .modal {
+  max-width: 650px;
+}
+
+.patient-list-content {
+  padding: 20px;
+}
+
+.patient-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.patient-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  background: #f8faf9;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.patient-list-item-number {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.patient-list-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.patient-list-item-name {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.patient-list-item-details {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.patient-list-remove {
+  background: #fee2e2;
+  color: var(--danger);
+  padding: 8px 11px;
+  border-radius: 8px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.patient-list-summary {
+  margin-top: 15px;
+  padding: 14px;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.patient-list-total {
+  color: var(--primary-dark);
+  font-weight: bold;
+}
+
+.patient-list-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.patient-list-buttons button {
+  flex: 1;
+  padding: 13px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.copy-list-btn {
+  background: var(--primary);
+  color: white;
+}
+
+.clear-list-btn {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+@media (max-width: 650px) {
+
+  .patient-list-btn {
+    left: 12px;
+    bottom: 12px;
+    right: 12px;
+    justify-content: center;
+  }
+
+  .patient-list-item {
+    align-items: flex-start;
+  }
+
+  .patient-list-buttons {
+    flex-direction: column;
+  }
+
+  .patient-list-summary {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
   }
 
 }
@@ -2697,23 +2941,43 @@ function renderClinicServices(
 
       card.innerHTML = `
 
-        <div class="service-icon">
+  <div class="service-icon">
 
-          ${escapeHTML(
-            service.icon
-          )}
+    ${escapeHTML(
+      service.icon
+    )}
 
-        </div>
+  </div>
 
-        <h3>
+  <h3>
 
-          ${escapeHTML(
-            service.name
-          )}
+    ${escapeHTML(
+      service.name
+    )}
 
-        </h3>
+  </h3>
 
-      `;
+  <button
+    type="button"
+    class="primary-btn"
+    style="
+      margin-top:12px;
+      width:100%;
+      padding:10px;
+    "
+    onclick="
+      event.stopPropagation();
+
+      addToPatientList(
+        '${escapeJS(clinic.id)}',
+        '${escapeJS(service.id)}'
+      );
+    "
+  >
+    ➕ إضافة للقائمة
+  </button>
+
+`;
 
 
       grid.appendChild(card);
@@ -5061,6 +5325,700 @@ async function deleteServiceOption(
 
   }
 
+
+  /* =====================================================
+   قائمة تحاليل المريض
+===================================================== */
+
+let patientList = [];
+
+
+/* =====================================================
+   إضافة خدمة إلى قائمة المريض
+===================================================== */
+
+function addToPatientList(
+  clinicId,
+  serviceId
+) {
+
+  const clinic =
+    clinics.find(
+      c =>
+        String(c.id) ===
+        String(clinicId)
+    );
+
+  if (!clinic) return;
+
+
+  const service =
+    clinic.services.find(
+      s =>
+        String(s.id) ===
+        String(serviceId)
+    );
+
+  if (!service) return;
+
+
+  /*
+    منع إضافة نفس التحليل مرتين
+  */
+
+  const exists =
+    patientList.some(
+      item =>
+        String(item.serviceId) ===
+        String(serviceId)
+    );
+
+
+  if (exists) {
+
+    showToast(
+      "هذا التحليل موجود بالفعل في القائمة."
+    );
+
+    return;
+
+  }
+
+
+  patientList.push({
+
+    clinicId:
+      clinic.id,
+
+    clinicName:
+      clinic.name,
+
+    serviceId:
+      service.id,
+
+    serviceName:
+      service.name,
+
+    serviceIcon:
+      service.icon || "🩺",
+
+    description:
+      service.description || "",
+
+    options:
+      Array.isArray(service.options)
+        ? service.options
+        : []
+
+  });
+
+
+  updatePatientListUI();
+
+
+  showToast(
+    `تمت إضافة "${service.name}" إلى القائمة.`
+  );
+
+}
+
+
+/* =====================================================
+   تحديث زر القائمة
+===================================================== */
+
+function updatePatientListUI() {
+
+  const button =
+    document.getElementById(
+      "patientListBtn"
+    );
+
+  const count =
+    document.getElementById(
+      "patientListCount"
+    );
+
+
+  count.textContent =
+    patientList.length;
+
+
+  button.classList.toggle(
+    "show",
+    patientList.length > 0
+  );
+
+}
+
+
+/* =====================================================
+   فتح قائمة المريض
+===================================================== */
+
+function openPatientList() {
+
+  renderPatientList();
+
+
+  document
+    .getElementById(
+      "patientListModal"
+    )
+    .classList.add(
+      "active"
+    );
+
+}
+
+
+/* =====================================================
+   إغلاق قائمة المريض
+===================================================== */
+
+function closePatientList() {
+
+  document
+    .getElementById(
+      "patientListModal"
+    )
+    .classList.remove(
+      "active"
+    );
+
+}
+
+
+function closePatientListOutside(event) {
+
+  if (
+    event.target ===
+    document.getElementById(
+      "patientListModal"
+    )
+  ) {
+
+    closePatientList();
+
+  }
+
+}
+
+
+/* =====================================================
+   عرض عناصر القائمة
+===================================================== */
+
+function renderPatientList() {
+
+  const container =
+    document.getElementById(
+      "patientListItems"
+    );
+
+
+  const summary =
+    document.getElementById(
+      "patientListSummary"
+    );
+
+
+  container.innerHTML = "";
+
+
+  if (patientList.length === 0) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <div style="
+          font-size:40px;
+          margin-bottom:12px;
+        ">
+          📋
+        </div>
+
+        قائمة المريض فارغة.
+
+      </div>
+
+    `;
+
+    summary.innerHTML = "";
+
+    return;
+
+  }
+
+
+  let total = 0;
+
+
+  patientList.forEach(
+    (item, index) => {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "patient-list-item";
+
+
+      /*
+        حساب السعر إذا كان هناك نوع واحد
+        أو عدة أنواع
+      */
+
+      let priceText = "";
+
+
+      if (
+        item.options &&
+        item.options.length > 0
+      ) {
+
+        if (
+          item.options.length === 1
+        ) {
+
+          const price =
+            parseFloat(
+              String(
+                item.options[0].price || ""
+              ).replace(
+                /[^0-9.]/g,
+                ""
+              )
+            );
+
+
+          if (!isNaN(price)) {
+
+            total += price;
+
+          }
+
+
+          priceText =
+            `${item.options[0].type || ""} — ${item.options[0].price || "-"}`;
+
+        } else {
+
+          priceText =
+            `${item.options.length} أنواع متاحة`;
+
+        }
+
+      }
+
+
+      div.innerHTML = `
+
+        <div class="patient-list-item-number">
+          ${index + 1}
+        </div>
+
+
+        <div class="patient-list-item-info">
+
+          <div class="patient-list-item-name">
+
+            ${escapeHTML(
+              item.serviceIcon
+            )}
+
+            ${escapeHTML(
+              item.serviceName
+            )}
+
+          </div>
+
+
+          <div class="patient-list-item-details">
+
+            ${escapeHTML(
+              item.clinicName
+            )}
+
+            ${
+              priceText
+                ? `<br>${escapeHTML(priceText)}`
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="patient-list-remove"
+          onclick="removeFromPatientList(${index})"
+        >
+          🗑️
+        </button>
+
+      `;
+
+
+      container.appendChild(
+        div
+      );
+
+    }
+  );
+
+
+  summary.innerHTML = `
+
+    <div>
+      عدد التحاليل:
+      <strong>
+        ${patientList.length}
+      </strong>
+    </div>
+
+    ${
+      total > 0
+        ? `
+          <div class="patient-list-total">
+            الإجمالي:
+            ${total.toFixed(3)}
+            دك
+          </div>
+        `
+        : ""
+    }
+
+  `;
+
+}
+
+
+/* =====================================================
+   حذف تحليل من القائمة
+===================================================== */
+
+function removeFromPatientList(
+  index
+) {
+
+  if (
+    index < 0 ||
+    index >= patientList.length
+  ) {
+
+    return;
+
+  }
+
+
+  const removed =
+    patientList[index];
+
+
+  patientList.splice(
+    index,
+    1
+  );
+
+
+  updatePatientListUI();
+
+
+  renderPatientList();
+
+
+  showToast(
+    `تم حذف "${removed.serviceName}" من القائمة.`
+  );
+
+}
+
+
+/* =====================================================
+   مسح القائمة بالكامل
+===================================================== */
+
+function clearPatientList() {
+
+  if (
+    patientList.length === 0
+  ) {
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      "هل تريد مسح جميع تحاليل المريض من القائمة؟"
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  patientList = [];
+
+
+  updatePatientListUI();
+
+
+  renderPatientList();
+
+
+  showToast(
+    "تم مسح قائمة المريض."
+  );
+
+}
+
+
+/* =====================================================
+   إنشاء النص الذي سيتم نسخه
+===================================================== */
+
+function buildPatientListText() {
+
+  if (
+    patientList.length === 0
+  ) {
+
+    return "";
+
+  }
+
+
+  let text =
+    "تحاليل المريض:\n\n";
+
+
+  patientList.forEach(
+    (item, index) => {
+
+      text +=
+        `${index + 1}. ${item.serviceName}\n`;
+
+
+      /*
+        إذا كان للتحليل أنواع وأسعار
+      */
+
+      if (
+        item.options &&
+        item.options.length > 0
+      ) {
+
+        item.options.forEach(
+          option => {
+
+            const type =
+              option.type ||
+              "نوع الخدمة";
+
+
+            const price =
+              option.price ||
+              "-";
+
+
+            text +=
+              `   - ${type}: ${price} دك\n`;
+
+          }
+        );
+
+      } else if (
+        item.description
+      ) {
+
+        text +=
+          `   ${item.description}\n`;
+
+      }
+
+
+      text += "\n";
+
+    }
+  );
+
+
+  text +=
+    "--------------------\n";
+
+
+  text +=
+    `عدد التحاليل: ${patientList.length}`;
+
+
+  /*
+    حساب الإجمالي فقط عندما يكون
+    لكل تحليل سعر واحد واضح
+  */
+
+  let total = 0;
+
+  let canCalculateTotal = true;
+
+
+  patientList.forEach(
+    item => {
+
+      if (
+        !item.options ||
+        item.options.length !== 1
+      ) {
+
+        canCalculateTotal = false;
+
+        return;
+
+      }
+
+
+      const price =
+        parseFloat(
+          String(
+            item.options[0].price || ""
+          ).replace(
+            /[^0-9.]/g,
+            ""
+          )
+        );
+
+
+      if (isNaN(price)) {
+
+        canCalculateTotal = false;
+
+        return;
+
+      }
+
+
+      total += price;
+
+    }
+  );
+
+
+  if (
+    canCalculateTotal &&
+    patientList.length > 0
+  ) {
+
+    text +=
+      `\nالإجمالي: ${total.toFixed(3)} دك`;
+
+  }
+
+
+  return text;
+
+}
+
+
+/* =====================================================
+   نسخ القائمة كاملة
+===================================================== */
+
+async function copyPatientList() {
+
+  const text =
+    buildPatientListText();
+
+
+  if (!text) {
+
+    showToast(
+      "القائمة فارغة."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      text
+    );
+
+
+    showToast(
+      "تم نسخ قائمة التحاليل بالكامل."
+    );
+
+
+  } catch (error) {
+
+    /*
+      طريقة احتياطية للأجهزة التي تمنع
+      Clipboard API
+    */
+
+    const textarea =
+      document.createElement(
+        "textarea"
+      );
+
+
+    textarea.value =
+      text;
+
+
+    textarea.style.position =
+      "fixed";
+
+    textarea.style.opacity =
+      "0";
+
+
+    document.body.appendChild(
+      textarea
+    );
+
+
+    textarea.select();
+
+
+    try {
+
+      document.execCommand(
+        "copy"
+      );
+
+
+      showToast(
+        "تم نسخ قائمة التحاليل بالكامل."
+      );
+
+    } catch (copyError) {
+
+      alert(
+        "تعذر نسخ القائمة تلقائيًا."
+      );
+
+    }
+
+
+    textarea.remove();
+
+  }
+
+}
 
   /* =====================================================
      تشغيل الموقع
