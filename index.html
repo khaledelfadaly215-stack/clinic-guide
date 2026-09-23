@@ -362,32 +362,35 @@
       display: flex;
     }
 
-    .modal {
-width: 100%;
-max-width: 550px;
-max-height: 90vh;
-background: white;
-border-radius: 25px;
-overflow: hidden;
-animation: modalIn 0.25s ease;
-display: flex;
-flex-direction: column;
+   .modal {
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  animation: modalIn 0.25s ease;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .modal-top {
-flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .modal-body {
-padding: 25px;
-overflow-y: auto;
-flex: 1;
-min-height: 0;
+  padding: 25px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .modal-buttons {
-flex-shrink: 0;
+  flex-shrink: 0;
 }
+
 
     @keyframes modalIn {
       from {
@@ -1120,19 +1123,41 @@ padding: 18px;
 
 .patient-list-modal .modal {
   max-width: 650px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .patient-list-content {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .patient-list-items {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 55vh;
+
+  flex: 1;
+  min-height: 0;
+
   overflow-y: auto;
+  padding-right: 3px;
 }
+
+.patient-list-summary {
+  flex-shrink: 0;
+}
+
+.patient-list-buttons {
+  flex-shrink: 0;
+}
+
 
 .patient-list-item {
   display: flex;
