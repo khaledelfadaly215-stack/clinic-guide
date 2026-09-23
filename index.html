@@ -1308,6 +1308,218 @@ font-size: 13px;
 
 }
 
+    /* ================= SERVICE MODAL ================= */
+
+#serviceModal .service-modal {
+  width: 100%;
+  max-width: 550px;
+  height: 90vh;
+  max-height: 90vh;
+
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 0;
+}
+
+
+/* ================= SERVICE HEADER ================= */
+
+#serviceModal .modal-top {
+  flex-shrink: 0;
+}
+
+
+/* ================= SERVICE DESCRIPTION ================= */
+
+.service-description-box {
+  flex-shrink: 0;
+
+  padding: 18px 20px;
+
+  background: white;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.service-description-box p {
+  color: #475b59;
+  line-height: 1.9;
+
+  white-space: pre-line;
+
+  margin: 0;
+}
+
+
+/* ================= SERVICE OPTIONS SCROLL ================= */
+
+.service-options-scroll {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 15px 18px;
+
+  background: #ffffff;
+}
+
+
+/* ================= TABLE ================= */
+
+.service-options {
+  width: 100%;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  background: white;
+
+  margin: 0;
+}
+
+
+.service-options-header,
+.service-option-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    130px;
+
+  align-items: center;
+}
+
+
+.service-options-header {
+  background: var(--primary);
+
+  color: white;
+
+  font-weight: bold;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 2;
+}
+
+
+.service-options-header > div,
+.service-option-row > div {
+  padding: 10px 12px;
+}
+
+
+.service-options-header > div:last-child,
+.service-option-row > div:last-child {
+  text-align: center;
+
+  border-right: 1px solid var(--border);
+}
+
+
+.service-option-row {
+  border-top: 1px solid var(--border);
+}
+
+
+.service-option-row:nth-child(even) {
+  background: #f8faf9;
+}
+
+
+.service-option-row > div:first-child {
+  color: var(--text);
+
+  white-space: normal;
+
+  overflow-wrap: anywhere;
+
+  word-break: normal;
+
+  line-height: 1.5;
+}
+
+
+.service-option-row > div:last-child {
+  color: var(--primary);
+
+  font-weight: bold;
+
+  white-space: nowrap;
+}
+
+
+/* ================= MODAL BUTTONS ================= */
+
+#serviceModal .modal-buttons {
+  flex-shrink: 0;
+
+  display: flex;
+
+  gap: 10px;
+
+  padding: 15px 18px;
+
+  margin: 0;
+
+  background: white;
+
+  border-top: 1px solid var(--border);
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 650px) {
+
+  #serviceModal .service-modal {
+    height: 90vh;
+    max-height: 90vh;
+  }
+
+
+  .service-description-box {
+    padding: 15px;
+  }
+
+
+  .service-options-scroll {
+    padding: 12px;
+  }
+
+
+  .service-options-header,
+  .service-option-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      100px;
+  }
+
+
+  .service-options-header > div,
+  .service-option-row > div {
+    padding: 10px 8px;
+
+    font-size: 13px;
+  }
+
+
+  #serviceModal .modal-buttons {
+    padding: 12px;
+  }
+
+}
   </style>
 </head>
 
@@ -1631,60 +1843,72 @@ font-size: 13px;
   </main>
 
 
-  <!-- ================= SERVICE MODAL ================= -->
+ <!-- ================= SERVICE MODAL ================= -->
 
-  <div
-    id="serviceModal"
-    class="modal-overlay"
-    onclick="closeModalOutside(event)"
-  >
+<div
+  id="serviceModal"
+  class="modal-overlay"
+  onclick="closeModalOutside(event)"
+>
 
-    <div class="modal">
+  <div class="modal service-modal">
 
-      <div class="modal-top">
+    <!-- رأس النافذة - ثابت -->
+    <div class="modal-top">
 
-        <div
-          id="modalIcon"
-          class="modal-icon"
-        >
-          🦷
-        </div>
-
-        <h2 id="modalTitle">
-          اسم الخدمة
-        </h2>
-
+      <div
+        id="modalIcon"
+        class="modal-icon"
+      >
+        🦷
       </div>
 
-      <div class="modal-body">
+      <h2 id="modalTitle">
+        اسم الخدمة
+      </h2>
 
-        <p id="modalDescription">
-          تفاصيل الخدمة
-        </p>
+    </div>
 
-        <div class="modal-buttons">
 
-          <button
-            class="share-btn"
-            onclick="shareService()"
-          >
-            📤 مشاركة كصورة
-          </button>
+    <!-- تفاصيل الخدمة - ثابتة -->
+    <div class="service-description-box">
 
-          <button
-            class="close-btn"
-            onclick="closeModal()"
-          >
-            إغلاق
-          </button>
+      <p id="modalDescription">
+        تفاصيل الخدمة
+      </p>
 
-        </div>
+    </div>
 
-      </div>
+
+    <!-- جدول الأنواع - الجزء المتحرك فقط -->
+    <div
+      id="serviceOptionsContainer"
+      class="service-options-scroll"
+    ></div>
+
+
+    <!-- الأزرار - ثابتة -->
+    <div class="modal-buttons">
+
+      <button
+        class="close-btn"
+        onclick="closeModal()"
+      >
+        إغلاق
+      </button>
+
+      <button
+        class="share-btn"
+        onclick="shareService()"
+      >
+        📤 مشاركة كصورة
+      </button>
 
     </div>
 
   </div>
+
+</div>
 
 
   <!-- ================= PASSWORD MODAL ================= -->
@@ -3094,174 +3318,205 @@ function clearClinicSearch() {
      فتح الخدمة
      ===================================================== */
 
-  function openService(
-clinicId,
-serviceId
+ function openService(
+  clinicId,
+  serviceId
 ) {
 
-const clinic =
-clinics.find(
-c =>
-String(c.id) ===
-String(clinicId)
-);
-
-if (!clinic) return;
-
-const service =
-clinic.services.find(
-s =>
-String(s.id) ===
-String(serviceId)
-);
-
-if (!service) return;
-
-currentClinic =
-clinic;
-
-currentService =
-service;
-
-/*
-أيقونة الخدمة
-*/
-
-document.getElementById(
-"modalIcon"
-).textContent =
-service.icon ||
-"🩺";
-
-/*
-اسم الخدمة
-*/
-
-document.getElementById(
-"modalTitle"
-).textContent =
-service.name;
-
-/*
-عرض أنواع الخدمة والأسعار
-*/
-
-const modalDescription =
-document.getElementById(
-"modalDescription"
-);
-
-if (
-Array.isArray(service.options) &&
-service.options.length > 0
-) {
-
-let tableHTML = `
-
-  <div class="service-options">
-
-    <div class="service-options-header">
-
-      <div>
-        أنواع الخدمة
-      </div>
-
-      <div>
-        السعر
-      </div>
-
-    </div>
-
-`;
+  const clinic =
+    clinics.find(
+      c =>
+        String(c.id) ===
+        String(clinicId)
+    );
 
 
-service.options.forEach(
-  (option, index) => {
-
-    const type =
-      option.type ||
-      `نوع الخدمة ${index + 1}`;
+  if (!clinic) return;
 
 
-    const price =
-      option.price ||
-      "-";
+  const service =
+    clinic.services.find(
+      s =>
+        String(s.id) ===
+        String(serviceId)
+    );
+
+
+  if (!service) return;
+
+
+  currentClinic =
+    clinic;
+
+  currentService =
+    service;
+
+
+  /*
+    ============================
+    أيقونة الخدمة
+    ============================
+  */
+
+  document.getElementById(
+    "modalIcon"
+  ).textContent =
+    service.icon || "🩺";
+
+
+  /*
+    ============================
+    اسم الخدمة
+    ============================
+  */
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    service.name || "اسم الخدمة";
+
+
+  /*
+    ============================
+    تفاصيل الخدمة
+    ============================
+  */
+
+  const modalDescription =
+    document.getElementById(
+      "modalDescription"
+    );
+
+
+  modalDescription.textContent =
+    service.description ||
+    "لا توجد تفاصيل متاحة.";
+
+
+  /*
+    ============================
+    منطقة جدول الأنواع
+    ============================
+  */
+
+  const optionsContainer =
+    document.getElementById(
+      "serviceOptionsContainer"
+    );
+
+
+  optionsContainer.innerHTML = "";
+
+
+  /*
+    إذا كانت هناك أنواع للخدمة
+  */
+
+  if (
+    Array.isArray(service.options) &&
+    service.options.length > 0
+  ) {
+
+    let tableHTML = `
+
+      <div class="service-options">
+
+        <div class="service-options-header">
+
+          <div>
+            أنواع الخدمة
+          </div>
+
+          <div>
+            السعر
+          </div>
+
+        </div>
+
+    `;
+
+
+    service.options.forEach(
+      (option, index) => {
+
+        const type =
+          option.type ||
+          `نوع الخدمة ${index + 1}`;
+
+
+        const price =
+          option.price ||
+          "-";
+
+
+        tableHTML += `
+
+          <div class="service-option-row">
+
+            <div>
+              ${escapeHTML(type)}
+            </div>
+
+            <div>
+              ${escapeHTML(price)}
+              ${
+                price !== "-"
+                  ? " دك"
+                  : ""
+              }
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    );
 
 
     tableHTML += `
 
-      <div class="service-option-row">
+      </div>
 
-        <div>
-          ${escapeHTML(type)}
-        </div>
+    `;
 
-        <div>
-          ${escapeHTML(price)}
-          ${price !== "-" ? " دك" : ""}
-        </div>
+
+    optionsContainer.innerHTML =
+      tableHTML;
+
+
+  } else {
+
+    /*
+      لا توجد أنواع
+    */
+
+    optionsContainer.innerHTML = `
+
+      <div class="empty">
+
+        لا توجد أنواع أو أسعار مضافة لهذه الخدمة.
 
       </div>
 
     `;
 
   }
-);
 
 
-tableHTML += `
+  /*
+    ============================
+    فتح النافذة
+    ============================
+  */
 
-  </div>
-
-`;
-
-
-modalDescription.innerHTML =
-  tableHTML;
-
-
-} else {
-
-modalDescription.textContent =
-  service.description ||
-  "لا توجد تفاصيل متاحة.";
-
+  document.getElementById(
+    "serviceModal"
+  ).classList.add(
+    "active"
+  );
 
 }
-
-document.getElementById(
-"serviceModal"
-).classList.add(
-"active"
-);
-
-}
-function closeModal() {
-
-document.getElementById(
-"serviceModal"
-).classList.remove(
-"active"
-);
-
-}
-
-
-  function closeModalOutside(event) {
-
-  if (
-    event.target ===
-    document.getElementById(
-      "serviceModal"
-    )
-  ) {
-
-    closeModal();
-
-  }
-
-}
-
 
   /* =====================================================
      مشاركة الخدمة كصورة
