@@ -541,13 +541,17 @@ padding: 18px;
 }
     /* ================= ADMIN ================= */
 
-    .admin-panel {
-      display: none;
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-    }
+  .admin-panel {
+  display: none;
+  background: #eef5f4;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.admin-panel.active {
+  display: block;
+}
 
     .admin-panel.active {
       display: block;
@@ -663,12 +667,19 @@ padding: 18px;
       font-weight: bold;
     }
 
-    .admin-clinic {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-      margin-top: 15px;
-    }
+   .admin-clinic {
+  margin-top: 25px;
+  padding: 22px;
+  border: 1px solid #d5e3e0;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(15, 118, 110, 0.08);
+}
+
+.admin-clinic:first-child {
+  margin-top: 0;
+}
+
 
     .admin-clinic-header {
       display: flex;
