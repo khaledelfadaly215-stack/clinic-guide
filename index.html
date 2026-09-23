@@ -534,14 +534,48 @@ font-size: 13px;
 }
 
 }
-    .modal {
-max-height: 88vh;
-border-radius: 20px;
+
+    /* ================= SERVICE MODAL FIX ================= */
+
+#serviceModal .modal {
+  width: 100%;
+  max-width: 550px;
+  height: 90vh;
+  max-height: 90vh;
+
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 0;
 }
 
-.modal-body {
-padding: 18px;
+#serviceModal .modal-top {
+  flex-shrink: 0;
 }
+
+#serviceModal .modal-body {
+  padding: 18px;
+
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#serviceModal .modal-buttons {
+  flex-shrink: 0;
+
+  display: flex;
+  gap: 10px;
+
+  padding-top: 15px;
+}
+
     /* ================= ADMIN ================= */
 
   .admin-panel {
