@@ -3517,6 +3517,34 @@ function clearClinicSearch() {
   );
 
 }
+  /* =====================================================
+   إغلاق نافذة تفاصيل الخدمة
+===================================================== */
+
+function closeModal() {
+  const modal = document.getElementById("serviceModal");
+
+  if (!modal) return;
+
+  modal.classList.remove("active");
+
+  currentService = null;
+}
+
+
+/* =====================================================
+   إغلاق النافذة عند الضغط خارجها
+===================================================== */
+
+function closeModalOutside(event) {
+  const modal = document.getElementById("serviceModal");
+
+  if (!modal) return;
+
+  if (event.target === modal) {
+    closeModal();
+  }
+}
 
   /* =====================================================
      مشاركة الخدمة كصورة
